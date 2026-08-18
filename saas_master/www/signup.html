@@ -1,0 +1,160 @@
+{% extends "templates/web.html" %}
+
+{% block title %}Create your store — Dukan{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_include %}
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816fullbleed">
+<link rel="stylesheet" href="/assets/saas_master/vendor/intl-tel-input/css/intlTelInput.css">
+{% endblock %}
+
+{% block page_content %}
+<script>document.body.classList.add("sm-page");</script>
+
+<div class="sm-wrap">
+  <header class="sm-header">
+    <a class="sm-logo" href="/">Du<span>kan</span></a>
+  </header>
+</div>
+
+<div class="sm-wizard sm-wizard-wide">
+  <div class="sm-progress">
+    <span data-step="1" class="done"></span>
+    <span data-step="2"></span>
+    <span data-step="3"></span>
+    <span data-step="4"></span>
+    <span data-step="5"></span>
+  </div>
+
+  <!-- Step 1: company -->
+  <div class="sm-step" data-step="1">
+    <h2>Tell us about your business</h2>
+    <div class="sm-field">
+      <label for="company_name">Company name *</label>
+      <input id="company_name" type="text" maxlength="100" placeholder="e.g. Nordic Clothing Co.">
+    </div>
+    <div class="sm-field">
+      <label for="industry">Industry *</label>
+      <select id="industry">
+        <option>Clothing</option>
+        <option>Electronics</option>
+        <option>Beauty</option>
+        <option>Home</option>
+        <option>Grocery</option>
+        <option>Services</option>
+        <option>Other</option>
+      </select>
+      <div class="sm-hint">Used if you skip a template match — pick a look on the next step.</div>
+    </div>
+    <div class="sm-field">
+      <label for="country">Country *</label>
+      <select id="country">
+        {% if geo.preferred %}
+        <optgroup label="Suggested">
+          {% for c in geo.preferred %}
+          <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
+          {% endfor %}
+        </optgroup>
+        {% endif %}
+        <optgroup label="All countries">
+          {% for c in geo.rest or geo.countries or [] %}
+          <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
+          {% endfor %}
+        </optgroup>
+      </select>
+    </div>
+    <div class="sm-field">
+      <label for="currency">Currency *</label>
+      <select id="currency">
+        {% for cur in geo.currencies or ["TRY", "USD", "EUR"] %}
+        <option value="{{ cur }}"{% if cur == "TRY" %} selected{% endif %}>{{ cur }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="sm-error" id="err-1"></div>
+  </div>
+
+  <!-- Step 2: template -->
+  <div class="sm-step" data-step="2" hidden>
+    <h2>Choose your store look</h2>
+    <p class="sm-hint" style="margin-top:-0.6rem;margin-bottom:1rem">
+      Pick a starter theme and demo catalog. You can change colors and products later.
+    </p>
+    <input type="hidden" id="template" value="">
+    <div class="sm-template-grid" id="template-grid">
+      <div class="sm-hint" id="template-loading">Loading templates…</div>
+    </div>
+    <div class="sm-error" id="err-2"></div>
+  </div>
+
+  <!-- Step 3: owner -->
+  <div class="sm-step" data-step="3" hidden>
+    <h2>Your info</h2>
+    <div class="sm-field">
+      <label for="owner_full_name">Full name *</label>
+      <input id="owner_full_name" type="text" maxlength="100">
+    </div>
+    <div class="sm-field">
+      <label for="owner_email">Email *</label>
+      <input id="owner_email" type="email" maxlength="140" placeholder="you@company.com">
+      <div class="sm-hint">This becomes your store login.</div>
+    </div>
+    <div class="sm-field">
+      <label for="owner_phone">Phone</label>
+      <input id="owner_phone" type="tel" autocomplete="tel" inputmode="tel">
+      <div class="sm-hint">Search by country or calling code. Flag and code update with your country.</div>
+    </div>
+    <div class="sm-field">
+      <label for="owner_password">Password *</label>
+      <input id="owner_password" type="password" maxlength="100">
+      <div class="sm-hint">At least 8 characters.</div>
+    </div>
+    <div class="sm-error" id="err-3"></div>
+  </div>
+
+  <!-- Step 4: domain -->
+  <div class="sm-step" data-step="4" hidden>
+    <h2>Your store address</h2>
+    <div class="sm-field">
+      <label for="business_domain">Current website (optional)</label>
+      <input id="business_domain" type="text" maxlength="140" placeholder="www.yourbrand.com">
+      <div class="sm-hint">If you already have a domain, we can connect it later.</div>
+    </div>
+    <div class="sm-field">
+      <label for="subdomain">Choose your store address *</label>
+      <div class="sm-subdomain-row">
+        <input id="subdomain" type="text" maxlength="31" placeholder="yourbrand"
+               autocomplete="off" spellcheck="false">
+        <span class="sm-suffix">.flexloopers.com</span>
+      </div>
+      <div class="sm-error" id="subdomain-check"></div>
+    </div>
+    <div class="sm-error" id="err-4"></div>
+  </div>
+
+  <!-- Step 5: review -->
+  <div class="sm-step" data-step="5" hidden>
+    <h2>Review &amp; create</h2>
+    <div class="sm-review"><dl id="review-list"></dl></div>
+    <div class="sm-hint">By creating a store you agree to fair-use of the beta service.</div>
+    <div class="sm-error" id="err-5"></div>
+  </div>
+
+  <!-- honeypot -->
+  <div class="sm-honeypot" aria-hidden="true">
+    <label>Website</label>
+    <input id="hp_website" type="text" tabindex="-1" autocomplete="off">
+  </div>
+
+  <div class="sm-wizard-nav">
+    <button class="sm-btn sm-btn-outline" id="btn-back" type="button" style="visibility:hidden">Back</button>
+    <button class="sm-btn" id="btn-next" type="button">Next</button>
+  </div>
+</div>
+
+<script type="application/json" id="sm-geo">{{ geo_json | safe }}</script>
+<script src="/assets/saas_master/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js"></script>
+<script src="/assets/saas_master/js/signup_wizard.js?v=20260816iti"></script>
+{% endblock %}

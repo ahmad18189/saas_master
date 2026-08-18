@@ -1,0 +1,227 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_include %}
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816fullbleed">
+<script>
+  document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
+  document.documentElement.setAttribute("dir", "{{ sm_dir }}");
+  document.documentElement.lang = "{{ sm_lang }}";
+</script>
+{% endblock %}
+
+{% block page_content %}
+<script>document.body.classList.add("sm-page");</script>
+
+{% include "templates/includes/sm_chrome.html" %}
+
+{% if use_marketing_blocks %}
+  {% include "templates/includes/marketing_landing_blocks.html" %}
+{% else %}
+{# —— Static fallback (pre-editor seed) —— #}
+<section class="sm-hero sm-hero--full">
+  <div class="sm-hero-bg" aria-hidden="true">
+    <img
+      class="sm-hero-img"
+      src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&amp;fit=crop&amp;w=2000&amp;q=80"
+      alt=""
+      width="2000"
+      height="1333"
+      decoding="async"
+      fetchpriority="high"
+    >
+    <div class="sm-hero-scrim"></div>
+  </div>
+  <div class="sm-wrap sm-hero-grid">
+    <div class="sm-hero-copy">
+      <a class="sm-brand-mark" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <h1>{{ sm.hero_title }}</h1>
+      <p>{{ sm.hero_sub }}</p>
+      <div class="sm-hero-actions">
+        <a class="sm-btn" href="/signup">{{ sm.cta_create_free }}</a>
+        <a class="sm-btn sm-btn-ghost" href="#templates">{{ sm.cta_demos }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-proof">
+  <div class="sm-wrap sm-proof-row">
+    <span class="sm-proof-line">{{ sm.proof_line }}</span>
+    <ul class="sm-proof-stats">
+      <li>{{ sm.proof_1 }}</li>
+      <li>{{ sm.proof_2 }}</li>
+      <li>{{ sm.proof_3 }}</li>
+    </ul>
+  </div>
+</section>
+
+<section class="sm-section" id="solutions-preview">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ sm.sec_solutions }}</h2>
+      <p>{{ sm.sec_solutions_sub }}</p>
+    </div>
+    <div class="sm-pillars">
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_storefront_t }}</h3>
+        <p>{{ sm.sol_storefront_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_inventory_t }}</h3>
+        <p>{{ sm.sol_inventory_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_orders_t }}</h3>
+        <p>{{ sm.sol_orders_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_lang_t }}</h3>
+        <p>{{ sm.sol_lang_d }}</p>
+      </article>
+      <article class="sm-pillar sm-pillar-soon">
+        <span class="sm-badge">{{ sm.badge_coming }}</span>
+        <h3>{{ sm.sol_pay_t }}</h3>
+        <p>{{ sm.sol_pay_d }}</p>
+      </article>
+      <article class="sm-pillar sm-pillar-soon">
+        <span class="sm-badge">{{ sm.badge_coming }}</span>
+        <h3>{{ sm.sol_ship_t }}</h3>
+        <p>{{ sm.sol_ship_d }}</p>
+      </article>
+    </div>
+    <div class="sm-section-cta">
+      <a class="sm-link" href="/solutions?lang={{ sm_lang }}">{{ sm.nav_solutions }} →</a>
+    </div>
+  </div>
+</section>
+
+<section class="sm-section sm-section-alt">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ sm.sec_audience }}</h2>
+    </div>
+    <div class="sm-audience">
+      <div><h3>{{ sm.aud_1_t }}</h3><p>{{ sm.aud_1_d }}</p></div>
+      <div><h3>{{ sm.aud_2_t }}</h3><p>{{ sm.aud_2_d }}</p></div>
+      <div><h3>{{ sm.aud_3_t }}</h3><p>{{ sm.aud_3_d }}</p></div>
+      <div><h3>{{ sm.aud_4_t }}</h3><p>{{ sm.aud_4_d }}</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-section" id="templates">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ sm.sec_templates }}</h2>
+      <p>{{ sm.sec_templates_sub }}</p>
+    </div>
+    <div class="sm-demo-grid">
+      {% for d in sm_demos %}
+      <a class="sm-demo-card" href="{{ d.url }}" target="_blank" rel="noopener"
+         style="--demo-bg: {{ d.color }}; --demo-accent: {{ d.accent }}">
+        <div class="sm-demo-media">
+          {% if d.image %}
+          <img class="sm-demo-img" src="{{ d.image }}" alt="{{ d.name }}" width="800" height="520" loading="lazy" decoding="async">
+          {% endif %}
+          <span class="sm-demo-accent-dot" aria-hidden="true"></span>
+        </div>
+        <div class="sm-demo-meta">
+          <span class="sm-demo-niche">{{ d.niche }}</span>
+          <strong>{{ d.name }}</strong>
+          <span class="sm-demo-open">{{ sm.open_demo }} →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="sm-section sm-section-alt">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ sm.sec_how }}</h2>
+    </div>
+    <div class="sm-grid sm-steps">
+      <div class="sm-card">
+        <span class="sm-step-num">1</span>
+        <h3>{{ sm.how_1_t }}</h3>
+        <p>{{ sm.how_1_d }}</p>
+      </div>
+      <div class="sm-card">
+        <span class="sm-step-num">2</span>
+        <h3>{{ sm.how_2_t }}</h3>
+        <p>{{ sm.how_2_d }}</p>
+      </div>
+      <div class="sm-card">
+        <span class="sm-step-num">3</span>
+        <h3>{{ sm.how_3_t }}</h3>
+        <p>{{ sm.how_3_d }}</p>
+      </div>
+      <div class="sm-card">
+        <span class="sm-step-num">4</span>
+        <h3>{{ sm.how_4_t }}</h3>
+        <p>{{ sm.how_4_d }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-section">
+  <div class="sm-wrap">
+    <div class="sm-diff">
+      <div class="sm-diff-media">
+        <img
+          class="sm-diff-img"
+          src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&amp;fit=crop&amp;w=1200&amp;h=900&amp;q=80"
+          alt=""
+          width="1200"
+          height="900"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+      <div class="sm-diff-copy">
+        <h2>{{ sm.sec_diff }}</h2>
+        <p>{{ sm.sec_diff_sub }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sm-section">
+  <div class="sm-wrap">
+    <div class="sm-banner">
+      <div class="sm-banner-mosaic" aria-hidden="true">
+        {% for d in sm_demos %}
+        <img
+          class="sm-banner-tile"
+          src="{{ d.image }}"
+          alt=""
+          width="400"
+          height="260"
+          loading="lazy"
+          decoding="async"
+        >
+        {% endfor %}
+      </div>
+      <div class="sm-banner-copy">
+        <h2>{{ sm.banner_title }}</h2>
+        <p>{{ sm.banner_sub }}</p>
+        <a class="sm-btn sm-btn-on-dark" href="/signup">{{ sm.cta_get_started }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% include "templates/includes/sm_footer.html" %}
+{% endblock %}

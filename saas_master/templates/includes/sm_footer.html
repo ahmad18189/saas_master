@@ -1,0 +1,25 @@
+<footer class="sm-footer">
+  <div class="sm-wrap sm-footer-inner">
+    <div class="sm-footer-brand">
+      <a class="sm-logo" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <p>{{ sm.footer_copy }}</p>
+    </div>
+    <div class="sm-footer-cols">
+      <div>
+        <strong>{{ sm.nav_solutions }}</strong>
+        <a href="/solutions?lang={{ sm_lang }}">{{ sm.nav_solutions }}</a>
+        <a href="/pricing?lang={{ sm_lang }}">{{ sm.nav_pricing }}</a>
+        <a href="/#templates">{{ sm.nav_templates }}</a>
+      </div>
+      <div>
+        <strong>{{ sm.footer_contact }}</strong>
+        <a href="mailto:dev@flexloopers.com">dev@flexloopers.com</a>
+        <a href="https://flexloopers.com" target="_blank" rel="noopener">flexloopers.com</a>
+      </div>
+    </div>
+  </div>
+  <div class="sm-wrap sm-footer-copy">
+    © {{ frappe.utils.nowdate()[:4] }} {{ sm.footer_copy }}
+  </div>
+</footer>
+<script src="/assets/saas_master/js/marketing.js?v=20260803b"></script>

@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-07-26 16:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "tenant_site",
+  "step",
+  "status",
+  "time_taken",
+  "command",
+  "console"
+ ],
+ "fields": [
+  {
+   "fieldname": "tenant_site",
+   "fieldtype": "Link",
+   "label": "Tenant Site",
+   "options": "Tenant Site",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "step",
+   "fieldtype": "Data",
+   "label": "Step",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Ongoing\nSuccess\nFailed",
+   "default": "Ongoing",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "time_taken",
+   "fieldtype": "Float",
+   "label": "Time Taken (s)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "command",
+   "fieldtype": "Small Text",
+   "label": "Command (redacted)",
+   "read_only": 1
+  },
+  {
+   "fieldname": "console",
+   "fieldtype": "Long Text",
+   "label": "Console Output",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-07-26 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Provisioning Log",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "report": 1,
+   "export": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 0
+}

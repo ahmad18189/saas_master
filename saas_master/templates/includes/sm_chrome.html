@@ -1,0 +1,27 @@
+{# Shared marketing chrome — expects sm, sm_lang, sm_langs, sm_dir, sm_page #}
+<div class="sm-topbar">
+  <div class="sm-wrap sm-topbar-inner">
+    <span class="sm-topbar-msg">{{ sm.announcement }}</span>
+    <div class="sm-lang" role="group" aria-label="Language">
+      {% for L in sm_langs %}
+      <button type="button" class="sm-lang-btn{% if L.code == sm_lang %} active{% endif %}" data-sm-lang="{{ L.code }}">{{ L.label }}</button>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<header class="sm-header">
+  <div class="sm-wrap sm-header-inner">
+    <a class="sm-logo" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+    <nav class="sm-nav">
+      <a href="/solutions?lang={{ sm_lang }}" {% if sm_page == 'solutions' %}class="is-active"{% endif %}>{{ sm.nav_solutions }}</a>
+      <a href="/pricing?lang={{ sm_lang }}" {% if sm_page == 'pricing' %}class="is-active"{% endif %}>{{ sm.nav_pricing }}</a>
+      <a href="/#templates">{{ sm.nav_templates }}</a>
+      <a href="/login">{{ sm.nav_login }}</a>
+    </nav>
+    <a class="sm-btn sm-btn-sm" href="/signup">{{ sm.cta_create }}</a>
+    {% if sm_show_landing_editor %}
+    <a class="sm-link" href="/landing-editor" style="margin-inline-start:.5rem;font-size:.85rem">Edit landing</a>
+    {% endif %}
+  </div>
+</header>

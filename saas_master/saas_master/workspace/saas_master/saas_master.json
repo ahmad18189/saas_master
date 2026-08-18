@@ -1,0 +1,158 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"cb_hero\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"SaaS Ops Hero\",\"col\":12}},{\"id\":\"nc_active\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Active Tenants\",\"col\":3}},{\"id\":\"nc_prov\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Provisioning Tenants\",\"col\":3}},{\"id\":\"nc_failed\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Failed Tenants\",\"col\":3}},{\"id\":\"nc_tmpl\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Ready Templates\",\"col\":3}},{\"id\":\"sp0\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"hdr_shortcuts\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Shortcuts</b></span>\",\"col\":12}},{\"id\":\"sc_tenants\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Tenant Sites\",\"col\":3}},{\"id\":\"sc_templates\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Site Templates\",\"col\":3}},{\"id\":\"sc_landing\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Marketing Landing\",\"col\":3}},{\"id\":\"sc_dash\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"SaaS Ops Dashboard\",\"col\":3}},{\"id\":\"sc_editor\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Landing Editor\",\"col\":3}},{\"id\":\"sp1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"hdr_masters\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Masters &amp; Logs</b></span>\",\"col\":12}},{\"id\":\"card_tenants\",\"type\":\"card\",\"data\":{\"card_name\":\"Tenants\",\"col\":4}},{\"id\":\"card_marketing\",\"type\":\"card\",\"data\":{\"card_name\":\"Marketing\",\"col\":4}},{\"id\":\"card_ops\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}}]",
+ "creation": "2026-08-16 17:52:00.000000",
+ "custom_blocks": [
+  {
+   "custom_block_name": "SaaS Ops Hero",
+   "label": "SaaS Ops Hero"
+  }
+ ],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "organization",
+ "idx": 0,
+ "is_hidden": 0,
+ "label": "SaaS Master",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Tenants",
+   "link_count": 2,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Tenant Site",
+   "link_count": 0,
+   "link_to": "Tenant Site",
+   "link_type": "DocType",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Site Template",
+   "link_count": 0,
+   "link_to": "Site Template",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Marketing",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Marketing Landing",
+   "link_count": 0,
+   "link_to": "Marketing Landing",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Operations",
+   "link_count": 1,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Provisioning Log",
+   "link_count": 0,
+   "link_to": "Provisioning Log",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-08-16 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "SaaS Master",
+ "number_cards": [
+  {
+   "label": "Active Tenants",
+   "number_card_name": "Active Tenants"
+  },
+  {
+   "label": "Provisioning",
+   "number_card_name": "Provisioning Tenants"
+  },
+  {
+   "label": "Failed",
+   "number_card_name": "Failed Tenants"
+  },
+  {
+   "label": "Templates",
+   "number_card_name": "Ready Templates"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "restrict_to_domain": "",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "sequence_id": 1.0,
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "label": "Tenant Sites",
+   "link_to": "Tenant Site",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "label": "Site Templates",
+   "link_to": "Site Template",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "",
+   "label": "Marketing Landing",
+   "link_to": "Marketing Landing",
+   "type": "DocType"
+  },
+  {
+   "color": "Blue",
+   "label": "SaaS Ops Dashboard",
+   "link_to": "SaaS Ops",
+   "type": "Dashboard"
+  },
+  {
+   "color": "Yellow",
+   "label": "Landing Editor",
+   "type": "URL",
+   "url": "/landing-editor"
+  }
+ ],
+ "title": "SaaS Master"
+}

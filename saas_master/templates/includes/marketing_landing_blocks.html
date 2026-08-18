@@ -1,0 +1,193 @@
+{# Renders Marketing Landing published/draft blocks using master.css classes. #}
+{% macro ri18n(map, lang) -%}
+{%- if map is mapping -%}
+{%- if map.get(lang) -%}{{ map.get(lang) }}
+{%- elif map.get('en') -%}{{ map.get('en') }}
+{%- elif map.get('ar') -%}{{ map.get('ar') }}
+{%- else -%}{{ map.values()|list|first if map else '' }}
+{%- endif -%}
+{%- else -%}{{ map or '' }}
+{%- endif -%}
+{%- endmacro %}
+
+{% for block in marketing_blocks %}
+{% set p = block.props if block.props is mapping else {} %}
+{% set p_items = p.get('items') if p is mapping else None %}
+{% set p_stats = p.get('stats') if p is mapping else None %}
+{% if block.type == 'hero' %}
+<section class="sm-hero sm-hero--full">
+  <div class="sm-hero-bg" aria-hidden="true">
+    {% if p.get('image') %}
+    <img class="sm-hero-img" src="{{ p.get('image') }}" alt="" width="2000" height="1333" decoding="async" fetchpriority="high">
+    {% endif %}
+    <div class="sm-hero-scrim"></div>
+  </div>
+  <div class="sm-wrap sm-hero-grid">
+    <div class="sm-hero-copy">
+      {% if p.get('brand_mark') %}
+      {% set bm = p.get('brand_mark') %}
+      <a class="sm-brand-mark" href="/?lang={{ sm_lang }}">{% if bm|length > 2 %}{{ bm[:2] }}<span>{{ bm[2:] }}</span>{% else %}{{ bm }}{% endif %}</a>
+      {% endif %}
+      <h1>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h1>
+      <p>{{ ri18n(p.get('subtitle_i18n'), sm_lang) }}</p>
+      <div class="sm-hero-actions">
+        {% if p.get('cta_primary_url') %}
+        <a class="sm-btn" href="{{ p.get('cta_primary_url') }}">{{ ri18n(p.get('cta_primary_label_i18n'), sm_lang) }}</a>
+        {% endif %}
+        {% if p.get('cta_secondary_url') %}
+        <a class="sm-btn sm-btn-ghost" href="{{ p.get('cta_secondary_url') }}">{{ ri18n(p.get('cta_secondary_label_i18n'), sm_lang) }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'proof' %}
+<section class="sm-proof">
+  <div class="sm-wrap sm-proof-row">
+    <span class="sm-proof-line">{{ ri18n(p.get('line_i18n'), sm_lang) }}</span>
+    <ul class="sm-proof-stats">
+      {% for s in p_stats or [] %}
+      <li>{{ ri18n(s.get('text_i18n') if s is mapping else none, sm_lang) }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{% elif block.type == 'pillars' %}
+<section class="sm-section" id="solutions-preview">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+      <p>{{ ri18n(p.get('subtitle_i18n'), sm_lang) }}</p>
+    </div>
+    <div class="sm-pillars">
+      {% for it in p_items or [] %}
+      <article class="sm-pillar{% if it.get('badge') == 'coming' %} sm-pillar-soon{% endif %}">
+        <span class="sm-badge{% if it.get('badge') != 'coming' %} sm-badge-ok{% endif %}">
+          {% if it.get('badge') == 'coming' %}{{ sm.badge_coming }}{% else %}{{ sm.badge_available }}{% endif %}
+        </span>
+        <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
+        <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    {% if p.get('link_url') %}
+    <div class="sm-section-cta">
+      <a class="sm-link" href="{{ p.get('link_url') }}{% if '?' not in p.get('link_url') %}?lang={{ sm_lang }}{% endif %}">{{ ri18n(p.get('link_label_i18n'), sm_lang) }} →</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% elif block.type == 'audience' %}
+<section class="sm-section sm-section-alt">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+    </div>
+    <div class="sm-audience">
+      {% for it in p_items or [] %}
+      <div>
+        <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
+        <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'demos' %}
+<section class="sm-section" id="templates">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+      <p>{{ ri18n(p.get('subtitle_i18n'), sm_lang) }}</p>
+    </div>
+    <div class="sm-demo-grid">
+      {% for d in p_items or [] %}
+      <a class="sm-demo-card" href="{{ d.get('url') }}" target="_blank" rel="noopener"
+         style="--demo-bg: {{ d.get('color') or '#111' }}; --demo-accent: {{ d.get('accent') or '#111' }}">
+        <div class="sm-demo-media">
+          {% if d.get('image') %}
+          <img class="sm-demo-img" src="{{ d.get('image') }}" alt="{{ ri18n(d.get('name_i18n'), sm_lang) }}" width="800" height="520" loading="lazy" decoding="async">
+          {% endif %}
+          <span class="sm-demo-accent-dot" aria-hidden="true"></span>
+        </div>
+        <div class="sm-demo-meta">
+          <span class="sm-demo-niche">{{ ri18n(d.get('niche_i18n'), sm_lang) }}</span>
+          <strong>{{ ri18n(d.get('name_i18n'), sm_lang) }}</strong>
+          <span class="sm-demo-open">{{ ri18n(p.get('open_label_i18n'), sm_lang) or sm.open_demo }} →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'steps' %}
+<section class="sm-section sm-section-alt">
+  <div class="sm-wrap">
+    <div class="sm-section-head">
+      <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+    </div>
+    <div class="sm-grid sm-steps">
+      {% for it in p_items or [] %}
+      <div class="sm-card">
+        <span class="sm-step-num">{{ loop.index }}</span>
+        <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
+        <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'diff' %}
+<section class="sm-section">
+  <div class="sm-wrap">
+    <div class="sm-diff">
+      <div class="sm-diff-media">
+        {% if p.get('image') %}
+        <img class="sm-diff-img" src="{{ p.get('image') }}" alt="" width="1200" height="900" loading="lazy" decoding="async">
+        {% endif %}
+      </div>
+      <div class="sm-diff-copy">
+        <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+        <p>{{ ri18n(p.get('subtitle_i18n'), sm_lang) }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'cta_banner' %}
+<section class="sm-section">
+  <div class="sm-wrap">
+    <div class="sm-banner">
+      {% if p.get('use_demo_mosaic') %}
+      <div class="sm-banner-mosaic" aria-hidden="true">
+        {% for d in (marketing_demo_images or []) %}
+        <img class="sm-banner-tile" src="{{ d }}" alt="" width="400" height="260" loading="lazy" decoding="async">
+        {% endfor %}
+      </div>
+      {% endif %}
+      <div class="sm-banner-copy">
+        <h2>{{ ri18n(p.get('title_i18n'), sm_lang) }}</h2>
+        <p>{{ ri18n(p.get('subtitle_i18n'), sm_lang) }}</p>
+        {% if p.get('cta_url') %}
+        <a class="sm-btn sm-btn-on-dark" href="{{ p.get('cta_url') }}">{{ ri18n(p.get('cta_label_i18n'), sm_lang) }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% elif block.type == 'html' %}
+<section class="sm-section">
+  <div class="sm-wrap">{{ (p.get('html') or '') | safe }}</div>
+</section>
+
+{% elif block.type == 'spacer' %}
+<div style="height: {{ p.get('height') or 40 }}px" aria-hidden="true"></div>
+{% endif %}
+{% endfor %}

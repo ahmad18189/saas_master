@@ -1,0 +1,68 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_include %}
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816fullbleed">
+<script>
+  document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
+  document.documentElement.setAttribute("dir", "{{ sm_dir }}");
+  document.documentElement.lang = "{{ sm_lang }}";
+</script>
+{% endblock %}
+
+{% block page_content %}
+<script>document.body.classList.add("sm-page");</script>
+{% include "templates/includes/sm_chrome.html" %}
+
+<section class="sm-page-hero">
+  <div class="sm-wrap">
+    <h1>{{ sm.solutions_title }}</h1>
+    <p>{{ sm.solutions_lead }}</p>
+  </div>
+</section>
+
+<section class="sm-section" style="padding-top:0">
+  <div class="sm-wrap">
+    <div class="sm-pillars">
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_storefront_t }}</h3>
+        <p>{{ sm.sol_storefront_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_inventory_t }}</h3>
+        <p>{{ sm.sol_inventory_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_orders_t }}</h3>
+        <p>{{ sm.sol_orders_d }}</p>
+      </article>
+      <article class="sm-pillar">
+        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
+        <h3>{{ sm.sol_lang_t }}</h3>
+        <p>{{ sm.sol_lang_d }}</p>
+      </article>
+      <article class="sm-pillar sm-pillar-soon">
+        <span class="sm-badge">{{ sm.badge_coming }}</span>
+        <h3>{{ sm.sol_pay_t }}</h3>
+        <p>{{ sm.sol_pay_d }}</p>
+      </article>
+      <article class="sm-pillar sm-pillar-soon">
+        <span class="sm-badge">{{ sm.badge_coming }}</span>
+        <h3>{{ sm.sol_ship_t }}</h3>
+        <p>{{ sm.sol_ship_d }}</p>
+      </article>
+    </div>
+    <div class="sm-section-cta" style="margin-top:2.5rem">
+      <a class="sm-btn" href="/signup">{{ sm.cta_create_free }}</a>
+    </div>
+  </div>
+</section>
+
+{% include "templates/includes/sm_footer.html" %}
+{% endblock %}

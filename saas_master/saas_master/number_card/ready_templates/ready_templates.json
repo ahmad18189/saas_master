@@ -1,0 +1,19 @@
+{
+ "creation": "2026-08-16 18:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "document_type": "Site Template",
+ "filters_json": "[[\"Site Template\",\"status\",\"=\",\"Ready\"]]",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Ready Templates",
+ "modified": "2026-08-16 18:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Ready Templates",
+ "owner": "Administrator",
+ "show_percentage_stats": 0,
+ "type": "Document Type"
+}

@@ -1,0 +1,178 @@
+{
+ "actions": [],
+ "autoname": "field:template_name",
+ "creation": "2026-07-26 17:30:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "template_name",
+  "source_site",
+  "status",
+  "column_break_main",
+  "industry",
+  "is_default",
+  "is_selectable",
+  "sort_order",
+  "built_on",
+  "preview_section",
+  "preview_image",
+  "preview_primary_color",
+  "preview_accent_color",
+  "details_section",
+  "description",
+  "apps_snapshot",
+  "backups_section",
+  "db_backup_path",
+  "public_files_path",
+  "private_files_path"
+ ],
+ "fields": [
+  {
+   "fieldname": "template_name",
+   "fieldtype": "Data",
+   "label": "Template Name",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "source_site",
+   "fieldtype": "Data",
+   "label": "Source Site",
+   "reqd": 1,
+   "in_list_view": 1,
+   "description": "Any site on this bench, e.g. demotenant1.milestoneksa.com"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nBuilding\nReady\nFailed",
+   "default": "Draft",
+   "read_only": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "industry",
+   "fieldtype": "Select",
+   "label": "Industry (auto-match)",
+   "options": "\nClothing\nElectronics\nBeauty\nHome\nGrocery\nServices\nOther",
+   "description": "New signups with this industry use this template automatically"
+  },
+  {
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Is Default Template",
+   "default": "0"
+  },
+  {
+   "fieldname": "is_selectable",
+   "fieldtype": "Check",
+   "label": "Show in Signup Wizard",
+   "default": "1"
+  },
+  {
+   "fieldname": "sort_order",
+   "fieldtype": "Int",
+   "label": "Sort Order",
+   "default": "100"
+  },
+  {
+   "fieldname": "built_on",
+   "fieldtype": "Datetime",
+   "label": "Built On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "preview_section",
+   "fieldtype": "Section Break",
+   "label": "Wizard Preview"
+  },
+  {
+   "fieldname": "preview_image",
+   "fieldtype": "Attach Image",
+   "label": "Preview Image"
+  },
+  {
+   "fieldname": "preview_primary_color",
+   "fieldtype": "Color",
+   "label": "Preview Primary Color"
+  },
+  {
+   "fieldname": "preview_accent_color",
+   "fieldtype": "Color",
+   "label": "Preview Accent Color"
+  },
+  {
+   "fieldname": "details_section",
+   "fieldtype": "Section Break",
+   "label": "Details"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "apps_snapshot",
+   "fieldtype": "Small Text",
+   "label": "Apps Snapshot",
+   "read_only": 1
+  },
+  {
+   "fieldname": "backups_section",
+   "fieldtype": "Section Break",
+   "label": "Backup Files",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "db_backup_path",
+   "fieldtype": "Data",
+   "label": "DB Backup Path",
+   "read_only": 1
+  },
+  {
+   "fieldname": "public_files_path",
+   "fieldtype": "Data",
+   "label": "Public Files Path",
+   "read_only": 1
+  },
+  {
+   "fieldname": "private_files_path",
+   "fieldtype": "Data",
+   "label": "Private Files Path",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-07-26 17:30:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Site Template",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "export": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

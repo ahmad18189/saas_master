@@ -1,0 +1,108 @@
+{% extends "templates/web.html" %}
+
+{% block title %}Creating your store — Dukan{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_include %}
+<link rel="stylesheet" href="/assets/saas_master/css/master.css">
+{% endblock %}
+
+{% block page_content %}
+<script>document.body.classList.add("sm-page");</script>
+
+<div class="sm-wrap">
+  <header class="sm-header">
+    <a class="sm-logo" href="/">Du<span>kan</span></a>
+  </header>
+</div>
+
+<div class="sm-status" id="status-box">
+  <div class="sm-spinner" id="spinner"></div>
+  <h2 id="status-title">Creating your store…</h2>
+  <p class="sm-step-label" id="status-step">Starting…</p>
+  <div id="status-detail"></div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var token = new URLSearchParams(window.location.search).get("token") || "";
+  var pollTimer = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  function done(res) {
+    clearInterval(pollTimer);
+    document.getElementById("spinner").style.display = "none";
+    var title = document.getElementById("status-title");
+    var stepEl = document.getElementById("status-step");
+    var detail = document.getElementById("status-detail");
+
+    if (res.status === "Active") {
+      title.textContent = "🎉 Your store is ready!";
+      stepEl.textContent = "";
+      var email = "";
+      var pw = "";
+      try {
+        email = sessionStorage.getItem("sm_owner_email") || "";
+        pw = sessionStorage.getItem("sm_owner_password") || "";
+        sessionStorage.removeItem("sm_owner_password");
+      } catch (e) { /* ignore */ }
+      var openUrl = res.site_url || res.ip_url || "";
+      var html = '<div class="sm-cred">';
+      html += '<div><strong>Store address:</strong> <a href="' + esc(openUrl) + '" target="_blank" rel="noopener"><code>' + esc(openUrl) + "</code></a></div>";
+      html += "<div><strong>Future domain:</strong> <code>" + esc(res.site_name) + "</code></div>";
+      if (email) html += "<div><strong>Login:</strong> <code>" + esc(email) + "</code></div>";
+      if (pw) html += "<div><strong>Password:</strong> <code>" + esc(pw) + "</code> — save it now, it is shown only once.</div>";
+      html += "</div>";
+      if (openUrl) {
+        html += '<a class="sm-btn" href="' + esc(openUrl) + '" target="_blank" rel="noopener">Open my store</a>';
+      }
+      if (!res.dns_active) {
+        html += '<div class="sm-badge">IP link works now. Public domain goes live once DNS is activated.</div>';
+      }
+      detail.innerHTML = html;
+    } else {
+      title.textContent = "Something went wrong";
+      stepEl.textContent = "";
+      detail.innerHTML =
+        '<p style="color:var(--sm-muted)">' + esc(res.error || "Our team has been notified and will fix your store shortly.") + "</p>" +
+        '<a class="sm-btn sm-btn-outline" href="/signup">Try again</a>';
+    }
+  }
+
+  function poll() {
+    fetch("/api/method/saas_master.api.signup.get_status?token=" + encodeURIComponent(token), {
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+    })
+      .then(function (r) { if (!r.ok) throw new Error("not found"); return r.json(); })
+      .then(function (data) {
+        var res = data.message || {};
+        if (res.status === "Active" || res.status === "Failed") { done(res); return; }
+        document.getElementById("status-step").textContent =
+          res.step ? "Step " + res.step : "Waiting in queue…";
+      })
+      .catch(function () {
+        clearInterval(pollTimer);
+        document.getElementById("spinner").style.display = "none";
+        document.getElementById("status-title").textContent = "Link expired or invalid";
+        document.getElementById("status-detail").innerHTML =
+          '<a class="sm-btn sm-btn-outline" href="/signup">Back to signup</a>';
+      });
+  }
+
+  if (!token) {
+    window.location.href = "/signup";
+  } else {
+    poll();
+    pollTimer = setInterval(poll, 3000);
+  }
+})();
+</script>
+{% endblock %}

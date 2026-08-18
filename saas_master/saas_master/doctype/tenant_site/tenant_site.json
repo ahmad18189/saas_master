@@ -1,0 +1,229 @@
+{
+ "actions": [],
+ "autoname": "field:site_name",
+ "creation": "2026-07-26 16:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "subdomain",
+  "site_name",
+  "status",
+  "dns_active",
+  "column_break_main",
+  "site_url",
+  "provisioning_step",
+  "preferred_template",
+  "used_template",
+  "error_message",
+  "company_section",
+  "company_name",
+  "industry",
+  "column_break_company",
+  "country",
+  "currency",
+  "owner_section",
+  "owner_full_name",
+  "owner_email",
+  "column_break_owner",
+  "owner_phone",
+  "business_domain",
+  "secrets_section",
+  "admin_password",
+  "owner_password",
+  "status_token",
+  "signup_ip"
+ ],
+ "fields": [
+  {
+   "fieldname": "subdomain",
+   "fieldtype": "Data",
+   "label": "Subdomain",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "site_name",
+   "fieldtype": "Data",
+   "label": "Site Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Draft\nQueued\nProvisioning\nActive\nFailed\nSuspended\nDropped",
+   "default": "Draft",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "dns_active",
+   "fieldtype": "Check",
+   "label": "DNS Active",
+   "default": "0"
+  },
+  {
+   "fieldname": "column_break_main",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "site_url",
+   "fieldtype": "Data",
+   "label": "Site URL",
+   "read_only": 1
+  },
+  {
+   "fieldname": "provisioning_step",
+   "fieldtype": "Data",
+   "label": "Provisioning Step",
+   "read_only": 1
+  },
+  {
+   "fieldname": "preferred_template",
+   "fieldtype": "Link",
+   "label": "Preferred Template",
+   "options": "Site Template",
+   "description": "Chosen at signup; provisioner uses this when Ready"
+  },
+  {
+   "fieldname": "used_template",
+   "fieldtype": "Link",
+   "label": "Used Template",
+   "options": "Site Template",
+   "read_only": 1
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Error Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "company_section",
+   "fieldtype": "Section Break",
+   "label": "Company"
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "label": "Company Name",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "industry",
+   "fieldtype": "Select",
+   "label": "Industry",
+   "options": "Clothing\nElectronics\nBeauty\nHome\nGrocery\nServices\nOther",
+   "default": "Clothing"
+  },
+  {
+   "fieldname": "column_break_company",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "country",
+   "fieldtype": "Link",
+   "label": "Country",
+   "options": "Country",
+   "default": "Turkey"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "default": "TRY"
+  },
+  {
+   "fieldname": "owner_section",
+   "fieldtype": "Section Break",
+   "label": "Owner"
+  },
+  {
+   "fieldname": "owner_full_name",
+   "fieldtype": "Data",
+   "label": "Owner Full Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "owner_email",
+   "fieldtype": "Data",
+   "label": "Owner Email",
+   "options": "Email",
+   "reqd": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_owner",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "owner_phone",
+   "fieldtype": "Data",
+   "label": "Owner Phone"
+  },
+  {
+   "fieldname": "business_domain",
+   "fieldtype": "Data",
+   "label": "Existing Business Domain"
+  },
+  {
+   "fieldname": "secrets_section",
+   "fieldtype": "Section Break",
+   "label": "Secrets",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "admin_password",
+   "fieldtype": "Password",
+   "label": "Tenant Administrator Password"
+  },
+  {
+   "fieldname": "owner_password",
+   "fieldtype": "Password",
+   "label": "Owner Password (cleared after provisioning)"
+  },
+  {
+   "fieldname": "status_token",
+   "fieldtype": "Data",
+   "label": "Status Token",
+   "read_only": 1,
+   "hidden": 1
+  },
+  {
+   "fieldname": "signup_ip",
+   "fieldtype": "Data",
+   "label": "Signup IP",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-07-26 16:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Tenant Site",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "print": 1,
+   "email": 1,
+   "export": 1,
+   "report": 1,
+   "share": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

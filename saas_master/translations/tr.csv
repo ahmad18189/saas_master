@@ -1,0 +1,123 @@
+Acquire → provision → activate → bill → support. Track tenants, templates, and marketing from one workspace.,Kazan → kur → etkinleştir → faturala → destekle. Kiracıları, şablonları ve pazarlamayı tek çalışma alanından izleyin.
+Active,Aktif
+Active Tenants,Aktif Kiracılar
+Admin Password,Yönetici Şifresi
+Any site on this bench, e.g. demotenant1.milestoneksa.com,Bu sunucudaki herhangi bir site, örn. demotenant1.milestoneksa.com
+Apps Snapshot,Uygulama Anlık Görüntüsü
+Backup Files,Yedek Dosyalar
+Beauty,Güzellik
+Building,Oluşturuluyor
+Built On,Oluşturma Tarihi
+Business Domain,İş Alan Adı
+Chosen at signup; provisioner uses this when Ready,Kayıtta seçilir; hazır olduğunda kullanılır
+Clothing,Giyim
+Command (redacted),Komut (gizli)
+Company,Şirket
+Company Name,Şirket Adı
+Company name and your full name are required.,Şirket adı ve adınız zorunludur.
+Confirmation text does not match the subdomain.,Onay metni alt alan adıyla eşleşmiyor.
+Console Output,Konsol Çıktısı
+Country,Ülke
+Currency,Para Birimi
+Custom HTML Block,Özel HTML Bloğu
+DB Backup Path,Veritabanı Yedek Yolu
+DNS Active,DNS Aktif
+Description,Açıklama
+Details,Detaylar
+Draft,Taslak
+Draft Blocks JSON,Taslak Bloklar (JSON)
+Dropped,Silindi
+Electronics,Elektronik
+Email,E-posta
+Error Message,Hata Mesajı
+Existing Business Domain,Mevcut İş Alan Adı
+Failed,Başarısız
+Flexloopers control plane,Flexloopers kontrol paneli
+Grocery,Market
+Home,Ev
+Industry,Sektör
+Industry (auto-match),Sektör (otomatik eşleşme)
+Invalid request.,Geçersiz istek.
+Invalid token.,Geçersiz jeton.
+Is Default Template,Varsayılan Şablon
+Landing Editor,Landing Editörü
+Landing page editor,Landing sayfası editörü
+Last Saved On,Son Kayıt
+Login required,Giriş gerekli
+Marketing,Pazarlama
+Marketing Landing,Pazarlama Landing
+Masters & Logs,Kayıtlar ve Loglar
+New signups with this industry use this template automatically,Bu sektördeki yeni kayıtlar bu şablonu otomatik kullanır
+Not found.,Bulunamadı.
+Not permitted,İzin yok
+Ongoing,Devam ediyor
+Only Active/Suspended tenants can be toggled.,Yalnızca Aktif/Askıya Alınmış kiracılar değiştirilebilir.
+Operations,Operasyonlar
+Other,Diğer
+Owner,Sahip
+Owner Email,Sahip E-postası
+Owner Full Name,Sahibin Tam Adı
+Owner Password,Sahip Şifresi
+Owner Password (cleared after provisioning),Sahip Şifresi (kurulumdan sonra silinir)
+Owner Phone,Sahip Telefonu
+Password must be at least 8 characters.,Şifre en az 8 karakter olmalıdır.
+Preferred Template,Tercih Edilen Şablon
+Preview Accent Color,Önizleme Vurgu Rengi
+Preview Image,Önizleme Görseli
+Preview Primary Color,Önizleme Ana Rengi
+Private Files Path,Özel Dosya Yolu
+Provisioning,Kuruluyor
+Provisioning Log,Kurulum Günlüğü
+Provisioning Step,Kurulum Adımı
+Public Files Path,Genel Dosya Yolu
+Published,Yayında
+Published Blocks JSON,Yayımlanan Bloklar (JSON)
+Published On,Yayın Tarihi
+Queued,Kuyrukta
+Ready,Hazır
+Ready Templates,Hazır Şablonlar
+Refusing to drop the master site.,Ana site silinmeyecek.
+Retry is only allowed for Failed tenants.,Yeniden deneme yalnızca Başarısız kiracılar için.
+SaaS Master,SaaS Master
+SaaS Ops,SaaS Operasyon
+SaaS Ops Dashboard,SaaS Operasyon Panosu
+SaaS Ops Hero,SaaS Operasyon Başlığı
+SaaS lifecycle desk,SaaS yaşam döngüsü masası
+Secrets,Gizliler
+Selected store template is not available.,Seçilen mağaza şablonu kullanılamıyor.
+Services,Hizmetler
+Shortcuts,Kısayollar
+Show in Signup Wizard,Kayıt Sihirbazında Göster
+Signup IP,Kayıt IP
+Site Name,Site Adı
+Site Template,Site Şablonu
+Site Templates,Site Şablonları
+Site URL,Site URL
+Sort Order,Sıralama
+Source Site,Kaynak Site
+Source site {0} does not exist on this bench.,Kaynak site {0} bu sunucuda yok.
+Status,Durum
+Status Token,Durum Jetonu
+Step,Adım
+Subdomain,Alt Alan Adı
+Subdomain must be 3-31 characters: lowercase letters, digits and dashes, starting with a letter or digit.,Alt alan adı 3–31 karakter olmalı: küçük harf, rakam ve tire; harf veya rakamla başlamalı.
+Success,Başarılı
+Suspended,Askıya Alındı
+Template Name,Şablon Adı
+Template is already building.,Şablon zaten oluşturuluyor.
+Template name: 3-61 chars, letters/digits/spaces/dashes/underscores only.,Şablon adı: 3–61 karakter; yalnızca harf/rakam/boşluk/tire/alt çizgi.
+Templates,Şablonlar
+Tenant Administrator Password,Kiracı Yönetici Şifresi
+Tenant Site,Kiracı Sitesi
+Tenant Sites,Kiracı Siteleri
+Tenants,Kiracılar
+Tenants by Status,Duruma Göre Kiracılar
+This subdomain is already taken.,Bu alt alan adı zaten alınmış.
+This subdomain is reserved.,Bu alt alan adı ayrılmış.
+Time Taken (s),Süre (sn)
+Used Template,Kullanılan Şablon
+Wizard Preview,Sihirbaz Önizlemesi
+You already have a store being created. Please wait for it to finish.,Zaten oluşturulmakta olan bir mağazanız var. Lütfen bitmesini bekleyin.
+bench drop-site failed — see Provisioning Log.,bench drop-site başarısız — Kurulum Günlüğüne bakın.
+bench set-config failed — see Provisioning Log.,bench set-config başarısız — Kurulum Günlüğüne bakın.
+saas_mariadb_root_password missing from master site_config.json,saas_mariadb_root_password master site_config.json içinde eksik

@@ -1,0 +1,84 @@
+{
+ "actions": [],
+ "creation": "2026-08-16 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "status",
+  "column_break_meta",
+  "published_on",
+  "last_saved_on",
+  "section_draft",
+  "draft_blocks",
+  "section_published",
+  "published_blocks"
+ ],
+ "fields": [
+  {
+   "default": "Draft",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Status",
+   "options": "Draft\nPublished"
+  },
+  {
+   "fieldname": "column_break_meta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "published_on",
+   "fieldtype": "Datetime",
+   "label": "Published On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_saved_on",
+   "fieldtype": "Datetime",
+   "label": "Last Saved On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_draft",
+   "fieldtype": "Section Break",
+   "label": "Draft"
+  },
+  {
+   "fieldname": "draft_blocks",
+   "fieldtype": "Long Text",
+   "label": "Draft Blocks JSON"
+  },
+  {
+   "fieldname": "section_published",
+   "fieldtype": "Section Break",
+   "label": "Published"
+  },
+  {
+   "fieldname": "published_blocks",
+   "fieldtype": "Long Text",
+   "label": "Published Blocks JSON"
+  }
+ ],
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-08-16 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Marketing Landing",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

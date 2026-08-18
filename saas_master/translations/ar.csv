@@ -1,0 +1,123 @@
+Acquire → provision → activate → bill → support. Track tenants, templates, and marketing from one workspace.,اكتسب ← وفّر ← فعّل ← فوّتر ← ادعم. تابع المستأجرين والقوالب والتسويق من مساحة عمل واحدة.
+Active,نشط
+Active Tenants,المستأجرون النشطون
+Admin Password,كلمة مرور المسؤول
+Any site on this bench, e.g. demotenant1.milestoneksa.com,أي موقع على هذا السيرفر، مثل demotenant1.milestoneksa.com
+Apps Snapshot,لقطة التطبيقات
+Backup Files,ملفات النسخ الاحتياطي
+Beauty,تجميل
+Building,قيد البناء
+Built On,تاريخ البناء
+Business Domain,نطاق العمل
+Chosen at signup; provisioner uses this when Ready,يُختار عند التسجيل؛ يُستخدم عند جاهزية القالب
+Clothing,ملابس
+Command (redacted),الأمر (مخفي)
+Company,الشركة
+Company Name,اسم الشركة
+Company name and your full name are required.,اسم الشركة واسمك الكامل مطلوبان.
+Confirmation text does not match the subdomain.,نص التأكيد لا يطابق النطاق الفرعي.
+Console Output,مخرجات الطرفية
+Country,الدولة
+Currency,العملة
+Custom HTML Block,كتلة HTML مخصصة
+DB Backup Path,مسار نسخة قاعدة البيانات
+DNS Active,DNS نشط
+Description,الوصف
+Details,التفاصيل
+Draft,مسودة
+Draft Blocks JSON,كتل المسودة (JSON)
+Dropped,محذوف
+Electronics,إلكترونيات
+Email,البريد الإلكتروني
+Error Message,رسالة الخطأ
+Existing Business Domain,نطاق العمل الحالي
+Failed,فشل
+Flexloopers control plane,لوحة تحكم Flexloopers
+Grocery,بقالة
+Home,منزل
+Industry,القطاع
+Industry (auto-match),القطاع (مطابقة تلقائية)
+Invalid request.,طلب غير صالح.
+Invalid token.,رمز غير صالح.
+Is Default Template,القالب الافتراضي
+Landing Editor,محرر الصفحة الرئيسية
+Landing page editor,محرر الصفحة الرئيسية
+Last Saved On,آخر حفظ
+Login required,يجب تسجيل الدخول
+Marketing,التسويق
+Marketing Landing,الصفحة التسويقية
+Masters & Logs,البيانات والسجلات
+New signups with this industry use this template automatically,التسجيلات الجديدة بهذا القطاع تستخدم هذا القالب تلقائيًا
+Not found.,غير موجود.
+Not permitted,غير مسموح
+Ongoing,جارٍ
+Only Active/Suspended tenants can be toggled.,يمكن تبديل المستأجرين النشطين أو المعلّقين فقط.
+Operations,العمليات
+Other,أخرى
+Owner,المالك
+Owner Email,بريد المالك
+Owner Full Name,الاسم الكامل للمالك
+Owner Password,كلمة مرور المالك
+Owner Password (cleared after provisioning),كلمة مرور المالك (تُمسح بعد التوفير)
+Owner Phone,هاتف المالك
+Password must be at least 8 characters.,يجب أن تكون كلمة المرور 8 أحرف على الأقل.
+Preferred Template,القالب المفضّل
+Preview Accent Color,لون التمييز للمعاينة
+Preview Image,صورة المعاينة
+Preview Primary Color,اللون الأساسي للمعاينة
+Private Files Path,مسار الملفات الخاصة
+Provisioning,قيد التوفير
+Provisioning Log,سجل التوفير
+Provisioning Step,خطوة التوفير
+Public Files Path,مسار الملفات العامة
+Published,منشور
+Published Blocks JSON,الكتل المنشورة (JSON)
+Published On,تاريخ النشر
+Queued,في الانتظار
+Ready,جاهز
+Ready Templates,القوالب الجاهزة
+Refusing to drop the master site.,رفض حذف موقع الماستر.
+Retry is only allowed for Failed tenants.,إعادة المحاولة مسموحة للمستأجرين الفاشلين فقط.
+SaaS Master,سااس ماستر
+SaaS Ops,عمليات السااس
+SaaS Ops Dashboard,لوحة عمليات السااس
+SaaS Ops Hero,بانر عمليات السااس
+SaaS lifecycle desk,مكتب دورة حياة السااس
+Secrets,الأسرار
+Selected store template is not available.,قالب المتجر المحدد غير متاح.
+Services,خدمات
+Shortcuts,اختصارات
+Show in Signup Wizard,إظهار في معالج التسجيل
+Signup IP,IP التسجيل
+Site Name,اسم الموقع
+Site Template,قالب الموقع
+Site Templates,قوالب المواقع
+Site URL,رابط الموقع
+Sort Order,ترتيب الفرز
+Source Site,الموقع المصدر
+Source site {0} does not exist on this bench.,الموقع المصدر {0} غير موجود على هذا السيرفر.
+Status,الحالة
+Status Token,رمز الحالة
+Step,الخطوة
+Subdomain,النطاق الفرعي
+Subdomain must be 3-31 characters: lowercase letters, digits and dashes, starting with a letter or digit.,يجب أن يكون النطاق الفرعي 3–31 حرفًا: أحرف صغيرة وأرقام وشرطات، ويبدأ بحرف أو رقم.
+Success,نجاح
+Suspended,معلّق
+Template Name,اسم القالب
+Template is already building.,القالب قيد البناء بالفعل.
+Template name: 3-61 chars, letters/digits/spaces/dashes/underscores only.,اسم القالب: 3–61 حرفًا، أحرف/أرقام/مسافات/شرطات/شرطات سفلية فقط.
+Templates,القوالب
+Tenant Administrator Password,كلمة مرور مسؤول المستأجر
+Tenant Site,موقع المستأجر
+Tenant Sites,مواقع المستأجرين
+Tenants,المستأجرون
+Tenants by Status,المستأجرون حسب الحالة
+This subdomain is already taken.,هذا النطاق الفرعي مستخدم بالفعل.
+This subdomain is reserved.,هذا النطاق الفرعي محجوز.
+Time Taken (s),الوقت المستغرق (ث)
+Used Template,القالب المستخدم
+Wizard Preview,معاينة المعالج
+You already have a store being created. Please wait for it to finish.,لديك متجر قيد الإنشاء بالفعل. يرجى الانتظار حتى ينتهي.
+bench drop-site failed — see Provisioning Log.,فشل حذف الموقع — راجع سجل التوفير.
+bench set-config failed — see Provisioning Log.,فشل ضبط الإعدادات — راجع سجل التوفير.
+saas_mariadb_root_password missing from master site_config.json,كلمة مرور MariaDB الجذر مفقودة من site_config.json للماستر

@@ -20,7 +20,7 @@ import subprocess
 from pathlib import Path
 
 import frappe
-from frappe.utils import get_bench_path, get_sites_path
+from frappe.utils import get_bench_path
 
 from saas_master.provisioning.runner import run_command
 
@@ -29,8 +29,27 @@ CERT_ROOT = Path("/etc/letsencrypt/live")
 ISSUE_BIN = "/usr/local/bin/saas-ssl-issue"
 
 
+def _sites_path() -> Path:
+	"""Bench sites/ directory (frappe.utils has no get_sites_path on v15)."""
+	return Path(get_bench_path()) / "sites"
+
+
+def _file_exists(path: str | Path) -> bool:
+	"""True if path is a regular file. Handles root-only /etc/letsencrypt/live (mode 700)."""
+	p = Path(path)
+	try:
+		return p.is_file()
+	except PermissionError:
+		proc = subprocess.run(
+			["sudo", "-n", "test", "-f", str(p)],
+			capture_output=True,
+			text=True,
+		)
+		return proc.returncode == 0
+
+
 def _common_conf() -> dict:
-	path = Path(get_sites_path()) / "common_site_config.json"
+	path = _sites_path() / "common_site_config.json"
 	try:
 		return json.loads(path.read_text())
 	except Exception:
@@ -38,7 +57,7 @@ def _common_conf() -> dict:
 
 
 def _site_config_path(site: str) -> Path:
-	return Path(get_sites_path()) / site / "site_config.json"
+	return _sites_path() / site / "site_config.json"
 
 
 def _read_site_config(site: str) -> dict:
@@ -58,7 +77,7 @@ def wildcard_configured() -> bool:
 	cert = wc.get("ssl_certificate") or ""
 	key = wc.get("ssl_certificate_key") or ""
 	domain = wc.get("domain") or ""
-	return bool(cert and key and domain and Path(cert).is_file() and Path(key).is_file())
+	return bool(cert and key and domain and _file_exists(cert) and _file_exists(key))
 
 
 def _site_matches_wildcard(site: str) -> bool:
@@ -85,7 +104,7 @@ def _issue_per_site_cert(site: str, tenant_name: str) -> tuple[str, str]:
 	live = CERT_ROOT / site
 	cert = str(live / "fullchain.pem")
 	key = str(live / "privkey.pem")
-	if Path(cert).is_file() and Path(key).is_file():
+	if _file_exists(cert) and _file_exists(key):
 		return cert, key
 
 	# Prefer passwordless sudo helper; fall back to direct certbot if root.
@@ -94,7 +113,7 @@ def _issue_per_site_cert(site: str, tenant_name: str) -> tuple[str, str]:
 	if not ok:
 		# Direct certbot (when worker somehow has rights) — still log
 		cmd2 = (
-			f"certbot certonly --nginx -d {site} --non-interactive "
+			f"sudo -n /usr/bin/certbot certonly --nginx -d {site} --non-interactive "
 			f"--agree-tos --register-unsafely-without-email "
 			f"--keep-until-expiring --cert-name {site}"
 		)
@@ -102,50 +121,131 @@ def _issue_per_site_cert(site: str, tenant_name: str) -> tuple[str, str]:
 		if not ok2:
 			raise RuntimeError(f"certbot failed for {site}: {(out or out2 or '')[-500:]}")
 
-	if not (Path(cert).is_file() and Path(key).is_file()):
+	if not (_file_exists(cert) and _file_exists(key)):
 		raise RuntimeError(f"certificate files missing for {site}")
 	return cert, key
 
 
 def reload_nginx(tenant_name: str) -> None:
-	run_command("bench setup nginx --yes", tenant_name, "6/6 nginx reload", timeout=120)
-	run_command(
-		"sudo -n nginx -t && sudo -n systemctl reload nginx",
-		tenant_name,
-		"6/6 nginx reload",
-		timeout=60,
+	"""Regenerate nginx.conf and reload the running nginx process.
+
+	Important: run_command uses Popen(shlex.split(...)) — no shell — so never
+	pass ``cmd1 && cmd2`` as a single string (reload would silently never run).
+	"""
+	ok_setup, out_setup = run_command(
+		"bench setup nginx --yes", tenant_name, "6/6 nginx setup", timeout=120
 	)
+	if not ok_setup:
+		raise RuntimeError(f"bench setup nginx failed: {(out_setup or '')[-400:]}")
+
+	ok_test, out_test = run_command(
+		"sudo -n nginx -t", tenant_name, "6/6 nginx test", timeout=60
+	)
+	if not ok_test:
+		raise RuntimeError(f"nginx -t failed: {(out_test or '')[-400:]}")
+
+	ok_reload, out_reload = run_command(
+		"sudo -n systemctl reload nginx", tenant_name, "6/6 nginx reload", timeout=60
+	)
+	if not ok_reload:
+		raise RuntimeError(f"nginx reload failed: {(out_reload or '')[-400:]}")
+
+
+def verify_tenant_https(
+	site: str,
+	*,
+	attempts: int = 10,
+	delay: float = 2.0,
+	timeout: float = 12.0,
+) -> None:
+	"""Confirm browsers will accept HTTPS for this hostname.
+
+	Checks TLS handshake (chain + hostname) and a successful HTTPS response.
+	Raises RuntimeError if not ready after retries (nginx reload lag, bad cert, etc.).
+	"""
+	import socket
+	import ssl
+	import time
+	import urllib.request
+
+	last_err = "unknown"
+	ctx = ssl.create_default_context()
+
+	for _ in range(attempts):
+		try:
+			with socket.create_connection((site, 443), timeout=timeout) as sock:
+				with ctx.wrap_socket(sock, server_hostname=site) as ssock:
+					# Hostname + chain already validated by wrap_socket
+					_ = ssock.getpeercert()
+
+			req = urllib.request.Request(
+				f"https://{site}/",
+				headers={"User-Agent": "saas-master-ssl-verify/1.0"},
+				method="GET",
+			)
+			with urllib.request.urlopen(req, timeout=timeout, context=ctx) as resp:
+				code = getattr(resp, "status", None) or resp.getcode()
+				# Drain a tiny bit so proxies don't hang; ignore body
+				try:
+					resp.read(256)
+				except Exception:
+					pass
+			if int(code) >= 200 and int(code) < 500:
+				return
+			last_err = f"unexpected HTTP {code}"
+		except Exception as e:
+			last_err = str(e)
+		time.sleep(delay)
+
+	raise RuntimeError(f"HTTPS not ready for {site}: {last_err[-400:]}")
 
 
 def ensure_tenant_ssl(site: str, tenant_name: str | None = None) -> str:
-	"""Ensure HTTPS works for a tenant site. Returns mode used: wildcard|per_site|existing."""
+	"""Best-effort HTTPS for a tenant. Returns mode used: wildcard|per_site|existing.
+
+	Configures cert paths + nginx, then verifies live TLS. Raises only so the
+	caller can treat HTTPS as pending — provisioning should still mark Active.
+	"""
 	tenant_name = tenant_name or site
 	cfg = _read_site_config(site)
+	mode_used = "per_site"
 
 	# Already has valid paths
 	if (
 		cfg.get("ssl_certificate")
 		and cfg.get("ssl_certificate_key")
-		and Path(cfg["ssl_certificate"]).is_file()
-		and Path(cfg["ssl_certificate_key"]).is_file()
+		and _file_exists(cfg["ssl_certificate"])
+		and _file_exists(cfg["ssl_certificate_key"])
 	):
 		reload_nginx(tenant_name)
-		return "existing"
+		mode_used = "existing"
+	else:
+		saas_ssl = (
+			(_common_conf().get("saas_ssl") or {})
+			if isinstance(_common_conf().get("saas_ssl"), dict)
+			else {}
+		)
+		mode = (saas_ssl.get("mode") or "per_site").lower()
 
-	saas_ssl = (_common_conf().get("saas_ssl") or {}) if isinstance(_common_conf().get("saas_ssl"), dict) else {}
-	mode = (saas_ssl.get("mode") or "per_site").lower()
-
-	if mode == "wildcard" or wildcard_configured():
-		if wildcard_configured() and _site_matches_wildcard(site):
-			# Bench picks up common_site_config.wildcard on setup nginx — no per-site paths needed
+		if mode == "wildcard" or wildcard_configured():
+			if wildcard_configured() and _site_matches_wildcard(site):
+				# Bench picks up common_site_config.wildcard on setup nginx
+				reload_nginx(tenant_name)
+				mode_used = "wildcard"
+			else:
+				cert, key = _issue_per_site_cert(site, tenant_name)
+				_set_site_ssl_paths(site, cert, key)
+				reload_nginx(tenant_name)
+				mode_used = "per_site"
+		else:
+			cert, key = _issue_per_site_cert(site, tenant_name)
+			_set_site_ssl_paths(site, cert, key)
 			reload_nginx(tenant_name)
-			return "wildcard"
-		# Wildcard requested but not ready — fall through to per_site
+			mode_used = "per_site"
 
-	cert, key = _issue_per_site_cert(site, tenant_name)
-	_set_site_ssl_paths(site, cert, key)
-	reload_nginx(tenant_name)
-	return "per_site"
+	# Prefer confirming HTTPS, but caller must not fail site creation on this.
+	verify_tenant_https(site)
+	return mode_used
 
 
 def try_issue_wildcard(base_domain: str = BASE_DOMAIN) -> bool:
@@ -202,7 +302,7 @@ def try_issue_wildcard(base_domain: str = BASE_DOMAIN) -> bool:
 
 	cert = str(live / "fullchain.pem")
 	key = str(live / "privkey.pem")
-	if not (Path(cert).is_file() and Path(key).is_file()):
+	if not (_file_exists(cert) and _file_exists(key)):
 		return False
 
 	conf["wildcard"] = {
@@ -213,5 +313,5 @@ def try_issue_wildcard(base_domain: str = BASE_DOMAIN) -> bool:
 	saas_ssl = dict(saas_ssl)
 	saas_ssl["mode"] = "wildcard"
 	conf["saas_ssl"] = saas_ssl
-	Path(get_sites_path(), "common_site_config.json").write_text(json.dumps(conf, indent=1) + "\n")
+	(_sites_path() / "common_site_config.json").write_text(json.dumps(conf, indent=1) + "\n")
 	return True

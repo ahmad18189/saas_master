@@ -1,108 +1,129 @@
 {% extends "templates/web.html" %}
 
-{% block title %}Creating your store — Dukan{% endblock %}
+{% block title %}{{ sm.st_title }}{% endblock %}
 
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block head_include %}
-<link rel="stylesheet" href="/assets/saas_master/css/master.css">
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260820signupDark2">
+<script>
+  document.documentElement.setAttribute("lang", "{{ sm_lang }}");
+  document.documentElement.setAttribute("dir", "{{ sm_dir }}");
+  document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
+</script>
 {% endblock %}
 
 {% block page_content %}
-<script>document.body.classList.add("sm-page");</script>
+<script>document.body.classList.add("sm-page", "sm-signup-page", "sm-status-page");</script>
 
-<div class="sm-wrap">
-  <header class="sm-header">
-    <a class="sm-logo" href="/">Du<span>kan</span></a>
-  </header>
+<div class="sm-signup-shell sm-status-shell">
+  <aside class="sm-signup-aside sm-status-hero" aria-label="{{ sm.st_hero_kicker }}">
+    <div class="sm-signup-aside-bg is-active" id="status-hero-bg"
+      style="background-image:url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&h=1600&q=80')"></div>
+    <div class="sm-signup-aside-fx" aria-hidden="true">
+      <span class="sm-aside-orb sm-aside-orb--a"></span>
+      <span class="sm-aside-orb sm-aside-orb--b"></span>
+      <span class="sm-aside-orb sm-aside-orb--c"></span>
+      <span class="sm-aside-beam"></span>
+      <span class="sm-aside-sparkles"></span>
+    </div>
+    <div class="sm-signup-aside-content">
+      <a class="sm-logo sm-logo-on-dark" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <p class="sm-signup-kicker" data-i18n="st_hero_kicker">{{ sm.st_hero_kicker }}</p>
+      <div class="sm-status-slides" id="status-slides" aria-live="polite">
+        <article class="sm-status-slide is-active" data-slide="0"
+          data-bg="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&h=1600&q=80">
+          <h1 data-i18n="st_slide1_t">{{ sm.st_slide1_t }}</h1>
+          <p data-i18n="st_slide1_d">{{ sm.st_slide1_d }}</p>
+        </article>
+        <article class="sm-status-slide" data-slide="1" hidden
+          data-bg="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&h=1600&q=80">
+          <h1 data-i18n="st_slide2_t">{{ sm.st_slide2_t }}</h1>
+          <p data-i18n="st_slide2_d">{{ sm.st_slide2_d }}</p>
+        </article>
+        <article class="sm-status-slide" data-slide="2" hidden
+          data-bg="https://images.unsplash.com/photo-1556745753-b2904692b3cd?auto=format&fit=crop&w=1200&h=1600&q=80">
+          <h1 data-i18n="st_slide3_t">{{ sm.st_slide3_t }}</h1>
+          <p data-i18n="st_slide3_d">{{ sm.st_slide3_d }}</p>
+        </article>
+        <article class="sm-status-slide" data-slide="3" hidden
+          data-bg="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&h=1600&q=80">
+          <h1 data-i18n="st_slide4_t">{{ sm.st_slide4_t }}</h1>
+          <p data-i18n="st_slide4_d">{{ sm.st_slide4_d }}</p>
+        </article>
+      </div>
+      <ul class="sm-signup-bullets sm-status-feats">
+        <li><span class="sm-ico" aria-hidden="true">🛒</span> <span data-i18n="feat_store">{{ sm.feat_store }}</span></li>
+        <li><span class="sm-ico" aria-hidden="true">📦</span> <span data-i18n="feat_erp">{{ sm.feat_erp }}</span></li>
+        <li><span class="sm-ico" aria-hidden="true">🌐</span> <span data-i18n="feat_lang">{{ sm.feat_lang }}</span></li>
+        <li><span class="sm-ico" aria-hidden="true">💳</span> <span data-i18n="feat_pay">{{ sm.feat_pay }}</span></li>
+      </ul>
+      <div class="sm-status-dots" id="status-dots" role="tablist" aria-label="Slides">
+        <button type="button" class="is-active" data-dot="0" aria-label="1"></button>
+        <button type="button" data-dot="1" aria-label="2"></button>
+        <button type="button" data-dot="2" aria-label="3"></button>
+        <button type="button" data-dot="3" aria-label="4"></button>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sm-signup-main sm-status-main">
+    <header class="sm-signup-top">
+      <a class="sm-logo sm-logo-mobile" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <div class="sm-topbar-tools">
+        {% include "templates/includes/sm_mode_toggle.html" %}
+        <div class="sm-theme-picker" data-sm-theme-picker>
+          <button type="button" class="sm-theme-trigger" aria-haspopup="listbox" aria-expanded="false" title="Accent color">
+            <span class="sm-theme-swatch" aria-hidden="true"></span>
+            <span class="sm-theme-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="sm-theme-menu" hidden role="listbox" aria-label="Accent colors">
+            <div class="sm-theme-menu-label">Accent</div>
+            <div class="sm-theme-grid"></div>
+          </div>
+        </div>
+        <div class="sm-lang sm-lang-prominent" role="group" aria-label="Language">
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'ar' %} active{% endif %}" data-sm-lang="ar" title="العربية">AR</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'en' %} active{% endif %}" data-sm-lang="en" title="English">EN</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'tr' %} active{% endif %}" data-sm-lang="tr" title="Türkçe">TR</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="sm-status-mobile-hero" id="status-mobile-hero" aria-live="polite">
+      <p class="sm-status-mobile-kicker" data-i18n="st_hero_kicker">{{ sm.st_hero_kicker }}</p>
+      <h2 class="sm-status-mobile-title" data-i18n-slide-t>{{ sm.st_slide1_t }}</h2>
+      <p class="sm-status-mobile-sub" data-i18n-slide-d>{{ sm.st_slide1_d }}</p>
+    </div>
+
+    <div class="sm-status-panel" id="status-box">
+      <div class="sm-status-panel-head" id="status-running">
+        <div class="sm-spinner" id="spinner" aria-hidden="true"></div>
+        <h2 id="status-title" data-i18n="st_creating">{{ sm.st_creating }}</h2>
+        <p class="sm-step-label" id="status-step" data-i18n="st_queue">{{ sm.st_queue }}</p>
+      </div>
+
+      <div class="sm-status-checklist-wrap">
+        <h3 class="sm-status-checklist-title" data-i18n="st_progress">{{ sm.st_progress }}</h3>
+        <ol class="sm-status-checklist" id="status-checklist">
+          <li data-step="0" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step1">{{ sm.st_step1 }}</span></li>
+          <li data-step="1" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step2">{{ sm.st_step2 }}</span></li>
+          <li data-step="2" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step3">{{ sm.st_step3 }}</span></li>
+          <li data-step="3" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step4">{{ sm.st_step4 }}</span></li>
+          <li data-step="4" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step5">{{ sm.st_step5 }}</span></li>
+          <li data-step="5" class="is-pending"><span class="sm-status-check"></span><span data-i18n="st_step6">{{ sm.st_step6 }}</span></li>
+        </ol>
+        <div class="sm-status-bar" aria-hidden="true"><span id="status-bar-fill"></span></div>
+      </div>
+
+      <div id="status-detail"></div>
+    </div>
+  </div>
 </div>
 
-<div class="sm-status" id="status-box">
-  <div class="sm-spinner" id="spinner"></div>
-  <h2 id="status-title">Creating your store…</h2>
-  <p class="sm-step-label" id="status-step">Starting…</p>
-  <div id="status-detail"></div>
-</div>
-
-<script>
-(function () {
-  "use strict";
-  var token = new URLSearchParams(window.location.search).get("token") || "";
-  var pollTimer = null;
-
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
-      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-    });
-  }
-
-  function done(res) {
-    clearInterval(pollTimer);
-    document.getElementById("spinner").style.display = "none";
-    var title = document.getElementById("status-title");
-    var stepEl = document.getElementById("status-step");
-    var detail = document.getElementById("status-detail");
-
-    if (res.status === "Active") {
-      title.textContent = "🎉 Your store is ready!";
-      stepEl.textContent = "";
-      var email = "";
-      var pw = "";
-      try {
-        email = sessionStorage.getItem("sm_owner_email") || "";
-        pw = sessionStorage.getItem("sm_owner_password") || "";
-        sessionStorage.removeItem("sm_owner_password");
-      } catch (e) { /* ignore */ }
-      var openUrl = res.site_url || res.ip_url || "";
-      var html = '<div class="sm-cred">';
-      html += '<div><strong>Store address:</strong> <a href="' + esc(openUrl) + '" target="_blank" rel="noopener"><code>' + esc(openUrl) + "</code></a></div>";
-      html += "<div><strong>Future domain:</strong> <code>" + esc(res.site_name) + "</code></div>";
-      if (email) html += "<div><strong>Login:</strong> <code>" + esc(email) + "</code></div>";
-      if (pw) html += "<div><strong>Password:</strong> <code>" + esc(pw) + "</code> — save it now, it is shown only once.</div>";
-      html += "</div>";
-      if (openUrl) {
-        html += '<a class="sm-btn" href="' + esc(openUrl) + '" target="_blank" rel="noopener">Open my store</a>';
-      }
-      if (!res.dns_active) {
-        html += '<div class="sm-badge">IP link works now. Public domain goes live once DNS is activated.</div>';
-      }
-      detail.innerHTML = html;
-    } else {
-      title.textContent = "Something went wrong";
-      stepEl.textContent = "";
-      detail.innerHTML =
-        '<p style="color:var(--sm-muted)">' + esc(res.error || "Our team has been notified and will fix your store shortly.") + "</p>" +
-        '<a class="sm-btn sm-btn-outline" href="/signup">Try again</a>';
-    }
-  }
-
-  function poll() {
-    fetch("/api/method/saas_master.api.signup.get_status?token=" + encodeURIComponent(token), {
-      headers: { "X-Requested-With": "XMLHttpRequest" },
-    })
-      .then(function (r) { if (!r.ok) throw new Error("not found"); return r.json(); })
-      .then(function (data) {
-        var res = data.message || {};
-        if (res.status === "Active" || res.status === "Failed") { done(res); return; }
-        document.getElementById("status-step").textContent =
-          res.step ? "Step " + res.step : "Waiting in queue…";
-      })
-      .catch(function () {
-        clearInterval(pollTimer);
-        document.getElementById("spinner").style.display = "none";
-        document.getElementById("status-title").textContent = "Link expired or invalid";
-        document.getElementById("status-detail").innerHTML =
-          '<a class="sm-btn sm-btn-outline" href="/signup">Back to signup</a>';
-      });
-  }
-
-  if (!token) {
-    window.location.href = "/signup";
-  } else {
-    poll();
-    pollTimer = setInterval(poll, 3000);
-  }
-})();
-</script>
+<script type="application/json" id="sm-i18n">{{ status_i18n_json | safe }}</script>
+<script type="application/json" id="sm-i18n-all">{{ status_i18n_all_json | safe }}</script>
+<script src="/assets/saas_master/js/signup_status.js?v=20260820status2"></script>
+<script src="/assets/saas_master/js/marketing.js?v=20260820mode2"></script>
 {% endblock %}

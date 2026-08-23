@@ -16,8 +16,18 @@
   "built_on",
   "preview_section",
   "preview_image",
+  "preview_image_en",
+  "preview_image_ar",
+  "preview_image_tr",
   "preview_primary_color",
   "preview_accent_color",
+  "wizard_copy_section",
+  "wizard_title_en",
+  "wizard_title_ar",
+  "wizard_title_tr",
+  "wizard_description_en",
+  "wizard_description_ar",
+  "wizard_description_tr",
   "details_section",
   "description",
   "apps_snapshot",
@@ -91,12 +101,29 @@
   {
    "fieldname": "preview_section",
    "fieldtype": "Section Break",
-   "label": "Wizard Preview"
+   "label": "Wizard Preview Images"
   },
   {
    "fieldname": "preview_image",
    "fieldtype": "Attach Image",
-   "label": "Preview Image"
+   "label": "Default Preview Image",
+   "description": "Fallback image when a language-specific URL is empty"
+  },
+  {
+   "fieldname": "preview_image_en",
+   "fieldtype": "Data",
+   "label": "Preview Image URL (EN)",
+   "description": "HTTPS image URL for English signup"
+  },
+  {
+   "fieldname": "preview_image_ar",
+   "fieldtype": "Data",
+   "label": "Preview Image URL (AR)"
+  },
+  {
+   "fieldname": "preview_image_tr",
+   "fieldtype": "Data",
+   "label": "Preview Image URL (TR)"
   },
   {
    "fieldname": "preview_primary_color",
@@ -109,6 +136,41 @@
    "label": "Preview Accent Color"
   },
   {
+   "fieldname": "wizard_copy_section",
+   "fieldtype": "Section Break",
+   "label": "Signup Wizard Copy (EN / AR / TR)"
+  },
+  {
+   "fieldname": "wizard_title_en",
+   "fieldtype": "Data",
+   "label": "Card Title (EN)"
+  },
+  {
+   "fieldname": "wizard_title_ar",
+   "fieldtype": "Data",
+   "label": "Card Title (AR)"
+  },
+  {
+   "fieldname": "wizard_title_tr",
+   "fieldtype": "Data",
+   "label": "Card Title (TR)"
+  },
+  {
+   "fieldname": "wizard_description_en",
+   "fieldtype": "Small Text",
+   "label": "Card Description (EN)"
+  },
+  {
+   "fieldname": "wizard_description_ar",
+   "fieldtype": "Small Text",
+   "label": "Card Description (AR)"
+  },
+  {
+   "fieldname": "wizard_description_tr",
+   "fieldtype": "Small Text",
+   "label": "Card Description (TR)"
+  },
+  {
    "fieldname": "details_section",
    "fieldtype": "Section Break",
    "label": "Details"
@@ -116,7 +178,7 @@
   {
    "fieldname": "description",
    "fieldtype": "Small Text",
-   "label": "Description"
+   "label": "Internal Description"
   },
   {
    "fieldname": "apps_snapshot",

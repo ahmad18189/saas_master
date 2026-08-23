@@ -21,6 +21,10 @@
     <img class="sm-hero-img" src="{{ p.get('image') }}" alt="" width="2000" height="1333" decoding="async" fetchpriority="high">
     {% endif %}
     <div class="sm-hero-scrim"></div>
+    <div class="sm-hero-fx" aria-hidden="true">
+      <span class="sm-hero-beam"></span>
+      <span class="sm-hero-dust"></span>
+    </div>
   </div>
   <div class="sm-wrap sm-hero-grid">
     <div class="sm-hero-copy">
@@ -64,11 +68,22 @@
     <div class="sm-pillars">
       {% for it in p_items or [] %}
       <article class="sm-pillar{% if it.get('badge') == 'coming' %} sm-pillar-soon{% endif %}">
+        {% if it.get('image') %}
+        <div class="sm-pillar-media">
+          <img class="sm-pillar-img" src="{{ it.get('image') }}" alt="" width="900" height="560" loading="lazy" decoding="async">
+          <span class="sm-badge{% if it.get('badge') != 'coming' %} sm-badge-ok{% endif %}">
+            {% if it.get('badge') == 'coming' %}{{ sm.badge_coming }}{% else %}{{ sm.badge_available }}{% endif %}
+          </span>
+        </div>
+        {% else %}
         <span class="sm-badge{% if it.get('badge') != 'coming' %} sm-badge-ok{% endif %}">
           {% if it.get('badge') == 'coming' %}{{ sm.badge_coming }}{% else %}{{ sm.badge_available }}{% endif %}
         </span>
-        <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
-        <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+        {% endif %}
+        <div class="sm-pillar-body">
+          <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
+          <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+        </div>
       </article>
       {% endfor %}
     </div>
@@ -88,10 +103,17 @@
     </div>
     <div class="sm-audience">
       {% for it in p_items or [] %}
-      <div>
-        <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
-        <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
-      </div>
+      <article class="sm-audience-card">
+        {% if it.get('image') %}
+        <div class="sm-audience-media">
+          <img class="sm-audience-img" src="{{ it.get('image') }}" alt="" width="900" height="560" loading="lazy" decoding="async">
+        </div>
+        {% endif %}
+        <div class="sm-audience-body">
+          <h3>{{ ri18n(it.get('title_i18n'), sm_lang) }}</h3>
+          <p>{{ ri18n(it.get('desc_i18n'), sm_lang) }}</p>
+        </div>
+      </article>
       {% endfor %}
     </div>
   </div>

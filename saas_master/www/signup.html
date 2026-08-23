@@ -1,160 +1,301 @@
 {% extends "templates/web.html" %}
 
-{% block title %}Create your store — Dukan{% endblock %}
+{% block title %}{{ sm.su_title }}{% endblock %}
 
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
 
 {% block head_include %}
-<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816fullbleed">
 <link rel="stylesheet" href="/assets/saas_master/vendor/intl-tel-input/css/intlTelInput.css">
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260820signupDark2">
+<script>
+  document.documentElement.setAttribute("lang", "{{ sm_lang }}");
+  document.documentElement.setAttribute("dir", "{{ sm_dir }}");
+  document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
+</script>
 {% endblock %}
 
 {% block page_content %}
-<script>document.body.classList.add("sm-page");</script>
+<script>document.body.classList.add("sm-page", "sm-signup-page");</script>
 
-<div class="sm-wrap">
-  <header class="sm-header">
-    <a class="sm-logo" href="/">Du<span>kan</span></a>
-  </header>
-</div>
-
-<div class="sm-wizard sm-wizard-wide">
-  <div class="sm-progress">
-    <span data-step="1" class="done"></span>
-    <span data-step="2"></span>
-    <span data-step="3"></span>
-    <span data-step="4"></span>
-    <span data-step="5"></span>
-  </div>
-
-  <!-- Step 1: company -->
-  <div class="sm-step" data-step="1">
-    <h2>Tell us about your business</h2>
-    <div class="sm-field">
-      <label for="company_name">Company name *</label>
-      <input id="company_name" type="text" maxlength="100" placeholder="e.g. Nordic Clothing Co.">
+<div class="sm-signup-shell">
+  <aside class="sm-signup-aside" aria-hidden="true">
+    <div class="sm-signup-aside-bg" id="signup-aside-bg"{% if signup_aside and signup_aside.image %} style="background-image:url('{{ signup_aside.image }}')"{% endif %}></div>
+    <div class="sm-signup-aside-fx" aria-hidden="true">
+      <span class="sm-aside-orb sm-aside-orb--a"></span>
+      <span class="sm-aside-orb sm-aside-orb--b"></span>
+      <span class="sm-aside-orb sm-aside-orb--c"></span>
+      <span class="sm-aside-beam"></span>
+      <span class="sm-aside-sparkles"></span>
     </div>
-    <div class="sm-field">
-      <label for="industry">Industry *</label>
-      <select id="industry">
-        <option>Clothing</option>
-        <option>Electronics</option>
-        <option>Beauty</option>
-        <option>Home</option>
-        <option>Grocery</option>
-        <option>Services</option>
-        <option>Other</option>
-      </select>
-      <div class="sm-hint">Used if you skip a template match — pick a look on the next step.</div>
-    </div>
-    <div class="sm-field">
-      <label for="country">Country *</label>
-      <select id="country">
-        {% if geo.preferred %}
-        <optgroup label="Suggested">
-          {% for c in geo.preferred %}
-          <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
+    <div class="sm-signup-aside-content">
+      <a class="sm-logo sm-logo-on-dark" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <p class="sm-signup-kicker" id="signup-aside-kicker">{{ signup_aside.kicker if signup_aside else sm.su_hero_kicker }}</p>
+      <h1 id="signup-aside-title">{{ signup_aside.title if signup_aside else sm.su_hero_title }}</h1>
+      <p id="signup-aside-sub">{{ signup_aside.subtitle if signup_aside else sm.su_hero_sub }}</p>
+      <ul class="sm-signup-bullets" id="signup-aside-bullets">
+        {% if signup_aside and signup_aside.bullets %}
+          {% for b in signup_aside.bullets %}
+          <li><span class="sm-ico" aria-hidden="true">{{ b.icon }}</span> <span>{{ b.text }}</span></li>
           {% endfor %}
-        </optgroup>
+        {% else %}
+          <li><span class="sm-ico" aria-hidden="true">🛒</span> <span>{{ sm.feat_store }}</span></li>
+          <li><span class="sm-ico" aria-hidden="true">📦</span> <span>{{ sm.feat_erp }}</span></li>
+          <li><span class="sm-ico" aria-hidden="true">🌐</span> <span>{{ sm.feat_lang }}</span></li>
         {% endif %}
-        <optgroup label="All countries">
-          {% for c in geo.rest or geo.countries or [] %}
-          <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
-          {% endfor %}
-        </optgroup>
-      </select>
+      </ul>
     </div>
-    <div class="sm-field">
-      <label for="currency">Currency *</label>
-      <select id="currency">
-        {% for cur in geo.currencies or ["TRY", "USD", "EUR"] %}
-        <option value="{{ cur }}"{% if cur == "TRY" %} selected{% endif %}>{{ cur }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="sm-error" id="err-1"></div>
-  </div>
+  </aside>
 
-  <!-- Step 2: template -->
-  <div class="sm-step" data-step="2" hidden>
-    <h2>Choose your store look</h2>
-    <p class="sm-hint" style="margin-top:-0.6rem;margin-bottom:1rem">
-      Pick a starter theme and demo catalog. You can change colors and products later.
-    </p>
-    <input type="hidden" id="template" value="">
-    <div class="sm-template-grid" id="template-grid">
-      <div class="sm-hint" id="template-loading">Loading templates…</div>
-    </div>
-    <div class="sm-error" id="err-2"></div>
-  </div>
-
-  <!-- Step 3: owner -->
-  <div class="sm-step" data-step="3" hidden>
-    <h2>Your info</h2>
-    <div class="sm-field">
-      <label for="owner_full_name">Full name *</label>
-      <input id="owner_full_name" type="text" maxlength="100">
-    </div>
-    <div class="sm-field">
-      <label for="owner_email">Email *</label>
-      <input id="owner_email" type="email" maxlength="140" placeholder="you@company.com">
-      <div class="sm-hint">This becomes your store login.</div>
-    </div>
-    <div class="sm-field">
-      <label for="owner_phone">Phone</label>
-      <input id="owner_phone" type="tel" autocomplete="tel" inputmode="tel">
-      <div class="sm-hint">Search by country or calling code. Flag and code update with your country.</div>
-    </div>
-    <div class="sm-field">
-      <label for="owner_password">Password *</label>
-      <input id="owner_password" type="password" maxlength="100">
-      <div class="sm-hint">At least 8 characters.</div>
-    </div>
-    <div class="sm-error" id="err-3"></div>
-  </div>
-
-  <!-- Step 4: domain -->
-  <div class="sm-step" data-step="4" hidden>
-    <h2>Your store address</h2>
-    <div class="sm-field">
-      <label for="business_domain">Current website (optional)</label>
-      <input id="business_domain" type="text" maxlength="140" placeholder="www.yourbrand.com">
-      <div class="sm-hint">If you already have a domain, we can connect it later.</div>
-    </div>
-    <div class="sm-field">
-      <label for="subdomain">Choose your store address *</label>
-      <div class="sm-subdomain-row">
-        <input id="subdomain" type="text" maxlength="31" placeholder="yourbrand"
-               autocomplete="off" spellcheck="false">
-        <span class="sm-suffix">.flexloopers.com</span>
+  <div class="sm-signup-main">
+    <header class="sm-signup-top">
+      <a class="sm-logo sm-logo-mobile" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <div class="sm-topbar-tools">
+        {% include "templates/includes/sm_mode_toggle.html" %}
+        <div class="sm-theme-picker" data-sm-theme-picker>
+          <button type="button" class="sm-theme-trigger" aria-haspopup="listbox" aria-expanded="false" title="Accent color">
+            <span class="sm-theme-swatch" aria-hidden="true"></span>
+            <span class="sm-theme-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="sm-theme-menu" hidden role="listbox" aria-label="Accent colors">
+            <div class="sm-theme-menu-label">Accent</div>
+            <div class="sm-theme-grid"></div>
+          </div>
+        </div>
+        <div class="sm-lang sm-lang-prominent" role="group" aria-label="Language">
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'ar' %} active{% endif %}" data-sm-lang="ar" title="العربية">AR</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'en' %} active{% endif %}" data-sm-lang="en" title="English">EN</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'tr' %} active{% endif %}" data-sm-lang="tr" title="Türkçe">TR</button>
+        </div>
       </div>
-      <div class="sm-error" id="subdomain-check"></div>
+    </header>
+
+    <div class="sm-wizard sm-wizard-wide sm-wizard-signup">
+      <div class="sm-progress-labels" id="progress-labels">
+        <span data-step="1" class="active"><i>🏢</i><b data-i18n="su_step_company">{{ sm.su_step_company }}</b></span>
+        <span data-step="2"><i>📊</i><b data-i18n="su_step_plan">{{ sm.su_step_plan }}</b></span>
+        <span data-step="3"><i>🎨</i><b data-i18n="su_step_look">{{ sm.su_step_look }}</b></span>
+        <span data-step="4"><i>👤</i><b data-i18n="su_step_you">{{ sm.su_step_you }}</b></span>
+        <span data-step="5"><i>🔗</i><b data-i18n="su_step_address">{{ sm.su_step_address }}</b></span>
+        <span data-step="6"><i>✅</i><b data-i18n="su_step_review">{{ sm.su_step_review }}</b></span>
+      </div>
+      <div class="sm-progress">
+        <span data-step="1" class="done"></span>
+        <span data-step="2"></span>
+        <span data-step="3"></span>
+        <span data-step="4"></span>
+        <span data-step="5"></span>
+        <span data-step="6"></span>
+      </div>
+
+      <!-- Step 1: company -->
+      <div class="sm-step" data-step="1">
+        <h2 data-i18n="su_h_company">{{ sm.su_h_company }}</h2>
+        <div class="sm-field-grid">
+          <div class="sm-field sm-field-span2">
+            <label for="company_name" data-i18n="su_company_name">{{ sm.su_company_name }}</label>
+            <input id="company_name" type="text" maxlength="100" data-i18n-placeholder="su_company_name_ph" placeholder="{{ sm.su_company_name_ph }}">
+          </div>
+          <div class="sm-field">
+            <label for="company_city" data-i18n="su_company_city">{{ sm.su_company_city }}</label>
+            <input id="company_city" type="text" maxlength="80" data-i18n-placeholder="su_company_city_ph" placeholder="{{ sm.su_company_city_ph }}">
+          </div>
+          <div class="sm-field">
+            <label for="industry" data-i18n="su_industry">{{ sm.su_industry }}</label>
+            <select id="industry">
+              <option value="Clothing" data-i18n="su_ind_clothing">{{ sm.su_ind_clothing }}</option>
+              <option value="Electronics" data-i18n="su_ind_electronics">{{ sm.su_ind_electronics }}</option>
+              <option value="Beauty" data-i18n="su_ind_beauty">{{ sm.su_ind_beauty }}</option>
+              <option value="Home" data-i18n="su_ind_home">{{ sm.su_ind_home }}</option>
+              <option value="Grocery" data-i18n="su_ind_grocery">{{ sm.su_ind_grocery }}</option>
+              <option value="Services" data-i18n="su_ind_services">{{ sm.su_ind_services }}</option>
+              <option value="Other" data-i18n="su_ind_other">{{ sm.su_ind_other }}</option>
+            </select>
+            <div class="sm-hint" data-i18n="su_industry_hint">{{ sm.su_industry_hint }}</div>
+          </div>
+          <div class="sm-field sm-field-span2">
+            <label for="company_description" data-i18n="su_company_desc">{{ sm.su_company_desc }}</label>
+            <textarea id="company_description" rows="3" maxlength="500" data-i18n-placeholder="su_company_desc_ph" placeholder="{{ sm.su_company_desc_ph }}"></textarea>
+          </div>
+          <div class="sm-field">
+            <label for="country" data-i18n="su_country">{{ sm.su_country }}</label>
+            <select id="country">
+              {% if geo.preferred %}
+              <optgroup label="Suggested">
+                {% for c in geo.preferred %}
+                <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
+                {% endfor %}
+              </optgroup>
+              {% endif %}
+              <optgroup label="All countries">
+                {% for c in geo.rest or geo.countries or [] %}
+                <option value="{{ c.name }}" data-isd="{{ c.isd }}" data-currency="{{ c.currency }}" data-code="{{ c.code }}"{% if c.name == geo.default_country %} selected{% endif %}>{{ c.name }}</option>
+                {% endfor %}
+              </optgroup>
+            </select>
+          </div>
+          <div class="sm-field">
+            <label for="currency" data-i18n="su_currency">{{ sm.su_currency }}</label>
+            <select id="currency">
+              {% for cur in geo.currencies or ["TRY", "USD", "EUR"] %}
+              <option value="{{ cur }}"{% if cur == "TRY" %} selected{% endif %}>{{ cur }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="sm-error" id="err-1"></div>
+      </div>
+
+      <!-- Step 2: catalog + plan -->
+      <div class="sm-step" data-step="2" hidden>
+        <h2 data-i18n="su_h_plan">{{ sm.su_h_plan }}</h2>
+        <p class="sm-lead" data-i18n="su_plan_lead">{{ sm.su_plan_lead }}</p>
+
+        <div class="sm-field">
+          <label data-i18n="su_products">{{ sm.su_products }}</label>
+          <div class="sm-choice-grid" id="product-bands" role="radiogroup">
+            <button type="button" class="sm-choice" data-band="under_50"><i>🧺</i><span data-i18n="su_band_50">{{ sm.su_band_50 }}</span></button>
+            <button type="button" class="sm-choice" data-band="50_200"><i>📦</i><span data-i18n="su_band_200">{{ sm.su_band_200 }}</span></button>
+            <button type="button" class="sm-choice" data-band="200_1000"><i>🏪</i><span data-i18n="su_band_1000">{{ sm.su_band_1000 }}</span></button>
+            <button type="button" class="sm-choice" data-band="over_1000"><i>🏭</i><span data-i18n="su_band_plus">{{ sm.su_band_plus }}</span></button>
+          </div>
+          <input type="hidden" id="product_count_band" value="">
+        </div>
+
+        <div class="sm-field">
+          <label data-i18n="su_support">{{ sm.su_support }}</label>
+          <div class="sm-choice-grid sm-choice-grid-3" id="support-need" role="radiogroup">
+            <button type="button" class="sm-choice" data-support="community"><i>✉️</i><span data-i18n="su_support_community">{{ sm.su_support_community }}</span></button>
+            <button type="button" class="sm-choice selected" data-support="chat"><i>💬</i><span data-i18n="su_support_chat">{{ sm.su_support_chat }}</span></button>
+            <button type="button" class="sm-choice" data-support="dedicated"><i>🤝</i><span data-i18n="su_support_dedicated">{{ sm.su_support_dedicated }}</span></button>
+          </div>
+          <input type="hidden" id="support_need" value="chat">
+        </div>
+
+        <input type="hidden" id="signup_plan" value="">
+        <div class="sm-plan-grid" id="plan-grid">
+          <button type="button" class="sm-plan-card" data-plan="Free">
+            <div class="sm-plan-badge" hidden data-i18n="su_suggested">{{ sm.su_suggested }}</div>
+            <div class="sm-plan-icon">🌱</div>
+            <strong data-i18n="su_plan_free">{{ sm.su_plan_free }}</strong>
+            <em data-i18n="su_plan_free_price">{{ sm.su_plan_free_price }}</em>
+            <p data-i18n="su_plan_free_desc">{{ sm.su_plan_free_desc }}</p>
+          </button>
+          <button type="button" class="sm-plan-card" data-plan="Growth">
+            <div class="sm-plan-badge" hidden data-i18n="su_suggested">{{ sm.su_suggested }}</div>
+            <div class="sm-plan-icon">🚀</div>
+            <strong data-i18n="su_plan_growth">{{ sm.su_plan_growth }}</strong>
+            <em data-i18n="su_plan_growth_price">{{ sm.su_plan_growth_price }}</em>
+            <p data-i18n="su_plan_growth_desc">{{ sm.su_plan_growth_desc }}</p>
+          </button>
+          <button type="button" class="sm-plan-card" data-plan="Enterprise">
+            <div class="sm-plan-badge" hidden data-i18n="su_suggested">{{ sm.su_suggested }}</div>
+            <div class="sm-plan-icon">🏢</div>
+            <strong data-i18n="su_plan_ent">{{ sm.su_plan_ent }}</strong>
+            <em data-i18n="su_plan_ent_price">{{ sm.su_plan_ent_price }}</em>
+            <p data-i18n="su_plan_ent_desc">{{ sm.su_plan_ent_desc }}</p>
+          </button>
+        </div>
+        <p class="sm-hint sm-plan-note" data-i18n="su_plan_beta_note">{{ sm.su_plan_beta_note }}</p>
+        <div class="sm-error" id="err-2"></div>
+      </div>
+
+      <!-- Step 3: template -->
+      <div class="sm-step" data-step="3" hidden>
+        <h2 data-i18n="su_h_look">{{ sm.su_h_look }}</h2>
+        <p class="sm-lead" data-i18n="su_look_hint">{{ sm.su_look_hint }}</p>
+        <input type="hidden" id="template" value="">
+        <div class="sm-template-grid" id="template-grid">
+          <div class="sm-hint" id="template-loading" data-i18n="su_loading_templates">{{ sm.su_loading_templates }}</div>
+        </div>
+        <div class="sm-error" id="err-3"></div>
+      </div>
+
+      <!-- Step 4: owner + referral -->
+      <div class="sm-step" data-step="4" hidden>
+        <h2 data-i18n="su_h_you">{{ sm.su_h_you }}</h2>
+        <div class="sm-field-grid">
+          <div class="sm-field sm-field-span2">
+            <label for="owner_full_name" data-i18n="su_full_name">{{ sm.su_full_name }}</label>
+            <input id="owner_full_name" type="text" maxlength="100">
+          </div>
+          <div class="sm-field sm-field-span2">
+            <label for="owner_email" data-i18n="su_email">{{ sm.su_email }}</label>
+            <input id="owner_email" type="email" maxlength="140" placeholder="you@company.com">
+            <div class="sm-hint" data-i18n="su_email_hint">{{ sm.su_email_hint }}</div>
+          </div>
+          <div class="sm-field">
+            <label for="owner_phone" data-i18n="su_phone">{{ sm.su_phone }}</label>
+            <input id="owner_phone" type="tel" autocomplete="tel" inputmode="tel">
+            <div class="sm-hint" data-i18n="su_phone_hint">{{ sm.su_phone_hint }}</div>
+          </div>
+          <div class="sm-field">
+            <label for="owner_password" data-i18n="su_password">{{ sm.su_password }}</label>
+            <input id="owner_password" type="password" maxlength="100">
+            <div class="sm-hint" data-i18n="su_password_hint">{{ sm.su_password_hint }}</div>
+          </div>
+          <div class="sm-field sm-field-span2">
+            <label data-i18n="su_heard">{{ sm.su_heard }}</label>
+            <div class="sm-choice-grid" id="referral-source" role="radiogroup">
+              <button type="button" class="sm-choice" data-ref="google"><i>🔎</i><span data-i18n="su_heard_google">{{ sm.su_heard_google }}</span></button>
+              <button type="button" class="sm-choice" data-ref="social"><i>📱</i><span data-i18n="su_heard_social">{{ sm.su_heard_social }}</span></button>
+              <button type="button" class="sm-choice" data-ref="friend"><i>👋</i><span data-i18n="su_heard_friend">{{ sm.su_heard_friend }}</span></button>
+              <button type="button" class="sm-choice" data-ref="compare_platforms"><i>⚖️</i><span data-i18n="su_heard_compare">{{ sm.su_heard_compare }}</span></button>
+              <button type="button" class="sm-choice" data-ref="youtube"><i>▶️</i><span data-i18n="su_heard_youtube">{{ sm.su_heard_youtube }}</span></button>
+              <button type="button" class="sm-choice" data-ref="event"><i>🎤</i><span data-i18n="su_heard_event">{{ sm.su_heard_event }}</span></button>
+              <button type="button" class="sm-choice" data-ref="other"><i>✨</i><span data-i18n="su_heard_other">{{ sm.su_heard_other }}</span></button>
+            </div>
+            <input type="hidden" id="referral_source" value="">
+          </div>
+        </div>
+        <div class="sm-error" id="err-4"></div>
+      </div>
+
+      <!-- Step 5: domain -->
+      <div class="sm-step" data-step="5" hidden>
+        <h2 data-i18n="su_h_address">{{ sm.su_h_address }}</h2>
+        <div class="sm-field">
+          <label for="business_domain" data-i18n="su_website">{{ sm.su_website }}</label>
+          <input id="business_domain" type="text" maxlength="140" placeholder="www.yourbrand.com">
+          <div class="sm-hint" data-i18n="su_website_hint">{{ sm.su_website_hint }}</div>
+        </div>
+        <div class="sm-field">
+          <label for="subdomain" data-i18n="su_subdomain">{{ sm.su_subdomain }}</label>
+          <div class="sm-subdomain-row">
+            <input id="subdomain" type="text" maxlength="31" placeholder="yourbrand" autocomplete="off" spellcheck="false">
+            <span class="sm-suffix">.flexloopers.com</span>
+          </div>
+          <div class="sm-error" id="subdomain-check"></div>
+        </div>
+        <div class="sm-error" id="err-5"></div>
+      </div>
+
+      <!-- Step 6: review -->
+      <div class="sm-step" data-step="6" hidden>
+        <h2 data-i18n="su_h_review">{{ sm.su_h_review }}</h2>
+        <div class="sm-review"><dl id="review-list"></dl></div>
+        <div class="sm-hint" data-i18n="su_agree">{{ sm.su_agree }}</div>
+        <div class="sm-error" id="err-6"></div>
+      </div>
+
+      <div class="sm-honeypot" aria-hidden="true">
+        <label>Website</label>
+        <input id="hp_website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="sm-wizard-nav">
+        <button class="sm-btn sm-btn-outline" id="btn-back" type="button" style="visibility:hidden" data-i18n="su_back">{{ sm.su_back }}</button>
+        <button class="sm-btn" id="btn-next" type="button" data-i18n="su_next">{{ sm.su_next }}</button>
+      </div>
     </div>
-    <div class="sm-error" id="err-4"></div>
-  </div>
-
-  <!-- Step 5: review -->
-  <div class="sm-step" data-step="5" hidden>
-    <h2>Review &amp; create</h2>
-    <div class="sm-review"><dl id="review-list"></dl></div>
-    <div class="sm-hint">By creating a store you agree to fair-use of the beta service.</div>
-    <div class="sm-error" id="err-5"></div>
-  </div>
-
-  <!-- honeypot -->
-  <div class="sm-honeypot" aria-hidden="true">
-    <label>Website</label>
-    <input id="hp_website" type="text" tabindex="-1" autocomplete="off">
-  </div>
-
-  <div class="sm-wizard-nav">
-    <button class="sm-btn sm-btn-outline" id="btn-back" type="button" style="visibility:hidden">Back</button>
-    <button class="sm-btn" id="btn-next" type="button">Next</button>
   </div>
 </div>
 
 <script type="application/json" id="sm-geo">{{ geo_json | safe }}</script>
+<script type="application/json" id="sm-i18n">{{ signup_i18n_json | safe }}</script>
+<script type="application/json" id="sm-i18n-all">{{ signup_i18n_all_json | safe }}</script>
+<script type="application/json" id="sm-aside-steps">{{ signup_aside_steps_json | safe }}</script>
 <script src="/assets/saas_master/vendor/intl-tel-input/js/intlTelInputWithUtils.min.js"></script>
-<script src="/assets/saas_master/js/signup_wizard.js?v=20260816iti"></script>
+<script src="/assets/saas_master/js/signup_wizard.js?v=20260820stepanim"></script>
+<script src="/assets/saas_master/js/marketing.js?v=20260820mode2"></script>
 {% endblock %}

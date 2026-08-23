@@ -17,20 +17,20 @@ RESERVED_SUBDOMAINS = {
 BASE_DOMAIN = "flexloopers.com"
 
 
-def validate_subdomain(subdomain: str, exclude_tenant: str | None = None) -> str:
-	"""Validate a subdomain and return the reason it is unavailable, or '' if OK."""
+def subdomain_issue(subdomain: str, exclude_tenant: str | None = None) -> str:
+	"""Return issue code: invalid | reserved | taken | '' if OK."""
 	subdomain = (subdomain or "").strip().lower()
 	if not SUBDOMAIN_RE.match(subdomain):
-		return _("Subdomain must be 3-31 characters: lowercase letters, digits and dashes, starting with a letter or digit.")
+		return "invalid"
 	if subdomain in RESERVED_SUBDOMAINS:
-		return _("This subdomain is reserved.")
+		return "reserved"
 
 	site_name = f"{subdomain}.{BASE_DOMAIN}"
 	filters = {"subdomain": subdomain, "status": ["!=", "Dropped"]}
 	if exclude_tenant:
 		filters["name"] = ["!=", exclude_tenant]
 	if frappe.db.exists("Tenant Site", filters):
-		return _("This subdomain is already taken.")
+		return "taken"
 
 	# Also check the bench sites directory (covers manually created sites)
 	import os
@@ -38,8 +38,22 @@ def validate_subdomain(subdomain: str, exclude_tenant: str | None = None) -> str
 	from frappe.utils import get_bench_path
 
 	if os.path.isdir(os.path.join(get_bench_path(), "sites", site_name)):
-		return _("This subdomain is already taken.")
+		return "taken"
 	return ""
+
+
+_SUBDOMAIN_MESSAGES = {
+	"invalid": "Subdomain must be 3-31 characters: lowercase letters, digits and dashes, starting with a letter or digit.",
+	"reserved": "This subdomain is reserved.",
+	"taken": "This subdomain is already taken.",
+}
+
+
+def validate_subdomain(subdomain: str, exclude_tenant: str | None = None) -> str:
+	"""Validate a subdomain and return the reason it is unavailable, or '' if OK."""
+	code = subdomain_issue(subdomain, exclude_tenant=exclude_tenant)
+	msg = _SUBDOMAIN_MESSAGES.get(code)
+	return _(msg) if msg else ""
 
 
 class TenantSite(Document):

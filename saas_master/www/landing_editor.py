@@ -14,5 +14,15 @@ def get_context(context):
 	context.no_sidebar = 1
 	context.no_header = 1
 	context.no_footer = 1
+	context.no_breadcrumbs = 1
+	context.full_width = 1
+	context.body_class = "ml-editor-body"
 	context.title = "Landing page editor"
+	context.head_html = (
+		'<script id="sm-mode-boot">(function(){try{var m=document.cookie.match(/(?:^|; )sm_mode=([^;]*)/);'
+		'var v=m?decodeURIComponent(m[1]):"";if(v!=="dark"&&v!=="light"){'
+		'v=(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches)?"dark":"light";}'
+		'document.documentElement.setAttribute("data-sm-mode",v);'
+		'document.documentElement.style.colorScheme=v;}catch(e){}})();</script>'
+	) + (context.get("head_html") or "")
 	return context

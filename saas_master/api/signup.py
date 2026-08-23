@@ -5,7 +5,7 @@ from frappe.utils import validate_email_address
 import re
 
 from saas_master.marketing_i18n import DEMO_TEMPLATES
-from saas_master.saas_master.doctype.tenant_site.tenant_site import validate_subdomain
+from saas_master.saas_master.doctype.tenant_site.tenant_site import subdomain_issue, validate_subdomain
 
 VALID_INDUSTRIES = (
 	"Clothing",
@@ -52,6 +52,21 @@ def preview_defaults_for_industry(industry: str | None) -> dict:
 		"preview_image": demo.get("image") or "",
 		"preview_primary_color": demo.get("color") or "",
 		"preview_accent_color": demo.get("accent") or "",
+		"title_i18n": {
+			"en": demo.get("name_en") or "",
+			"ar": demo.get("name_ar") or demo.get("name_en") or "",
+			"tr": demo.get("name_tr") or demo.get("name_en") or "",
+		},
+		"description_i18n": {
+			"en": demo.get("desc_en") or "",
+			"ar": demo.get("desc_ar") or demo.get("desc_en") or "",
+			"tr": demo.get("desc_tr") or demo.get("desc_en") or "",
+		},
+		"niche_i18n": {
+			"en": demo.get("niche_en") or "",
+			"ar": demo.get("niche_ar") or demo.get("niche_en") or "",
+			"tr": demo.get("niche_tr") or demo.get("niche_en") or "",
+		},
 	}
 
 
@@ -84,8 +99,12 @@ def ensure_template_preview_images(force: bool = False) -> int:
 @frappe.whitelist(allow_guest=True)
 @rate_limit(limit=30, seconds=60)
 def check_subdomain(subdomain: str):
-	reason = validate_subdomain(subdomain)
-	return {"available": not reason, "reason": reason}
+	code = subdomain_issue(subdomain)
+	return {
+		"available": not code,
+		"reason_code": code or "",
+		"reason": validate_subdomain(subdomain),
+	}
 
 
 def geo_options() -> dict:
@@ -169,6 +188,15 @@ def list_templates():
 			"description",
 			"industry",
 			"preview_image",
+			"preview_image_en",
+			"preview_image_ar",
+			"preview_image_tr",
+			"wizard_title_en",
+			"wizard_title_ar",
+			"wizard_title_tr",
+			"wizard_description_en",
+			"wizard_description_ar",
+			"wizard_description_tr",
 			"preview_primary_color",
 			"preview_accent_color",
 			"sort_order",
@@ -179,13 +207,36 @@ def list_templates():
 	out = []
 	for r in rows:
 		defaults = preview_defaults_for_industry(r.industry)
+		fallback_title = defaults.get("title_i18n") or {}
+		fallback_desc = defaults.get("description_i18n") or {}
+		fallback_img = defaults.get("preview_image") or ""
+
+		title_i18n = {
+			"en": (r.wizard_title_en or fallback_title.get("en") or r.template_name or r.name or ""),
+			"ar": (r.wizard_title_ar or fallback_title.get("ar") or r.wizard_title_en or r.template_name or r.name or ""),
+			"tr": (r.wizard_title_tr or fallback_title.get("tr") or r.wizard_title_en or r.template_name or r.name or ""),
+		}
+		desc_i18n = {
+			"en": (r.wizard_description_en or fallback_desc.get("en") or r.description or ""),
+			"ar": (r.wizard_description_ar or fallback_desc.get("ar") or r.wizard_description_en or r.description or ""),
+			"tr": (r.wizard_description_tr or fallback_desc.get("tr") or r.wizard_description_en or r.description or ""),
+		}
+		default_img = (r.preview_image or fallback_img or "").strip()
+		image_i18n = {
+			"en": (r.preview_image_en or default_img or "").strip(),
+			"ar": (r.preview_image_ar or default_img or "").strip(),
+			"tr": (r.preview_image_tr or default_img or "").strip(),
+		}
 		out.append(
 			{
 				"name": r.name,
-				"title": r.template_name or r.name,
-				"description": r.description or "",
+				"title": title_i18n["en"],
+				"title_i18n": title_i18n,
+				"description": desc_i18n["en"],
+				"description_i18n": desc_i18n,
 				"industry": r.industry or "Other",
-				"preview_image": r.preview_image or defaults.get("preview_image") or "",
+				"preview_image": image_i18n["en"] or default_img,
+				"preview_image_i18n": image_i18n,
 				"primary_color": r.preview_primary_color
 				or defaults.get("preview_primary_color")
 				or "#121212",
@@ -213,6 +264,12 @@ def create_tenant(
 	owner_password: str = "",
 	template: str = "",
 	website: str = "",  # honeypot — real users never fill this
+	company_city: str = "",
+	company_description: str = "",
+	product_count_band: str = "",
+	support_need: str = "",
+	signup_plan: str = "",
+	referral_source: str = "",
 ):
 	if website:
 		frappe.throw(_("Invalid request."))
@@ -230,6 +287,41 @@ def create_tenant(
 	reason = validate_subdomain(subdomain)
 	if reason:
 		frappe.throw(reason)
+
+	VALID_BANDS = ("under_50", "50_200", "200_1000", "over_1000")
+	VALID_SUPPORT = ("community", "chat", "dedicated")
+	VALID_PLANS = ("Free", "Growth", "Enterprise")
+	VALID_REFERRALS = (
+		"google",
+		"social",
+		"friend",
+		"compare_platforms",
+		"compare_salla_zid",  # legacy
+		"youtube",
+		"event",
+		"other",
+	)
+
+	product_count_band = (product_count_band or "").strip()
+	if product_count_band and product_count_band not in VALID_BANDS:
+		product_count_band = ""
+	support_need = (support_need or "").strip()
+	if support_need and support_need not in VALID_SUPPORT:
+		support_need = "chat"
+	signup_plan = (signup_plan or "").strip()
+	if signup_plan not in VALID_PLANS:
+		# Suggest from catalog size if missing/invalid
+		if product_count_band in ("over_1000",) or support_need == "dedicated":
+			signup_plan = "Enterprise"
+		elif product_count_band in ("50_200", "200_1000") or support_need == "chat":
+			signup_plan = "Growth"
+		else:
+			signup_plan = "Free"
+	referral_source = (referral_source or "").strip()
+	if referral_source == "compare_salla_zid":
+		referral_source = "compare_platforms"
+	if referral_source and referral_source not in VALID_REFERRALS:
+		referral_source = "other"
 
 	preferred_template = (template or "").strip() or None
 	if preferred_template:
@@ -266,9 +358,15 @@ def create_tenant(
 			"subdomain": subdomain.strip().lower(),
 			"status": "Queued",
 			"company_name": company_name,
+			"company_city": (company_city or "").strip()[:80],
+			"company_description": (company_description or "").strip()[:500],
 			"industry": industry,
 			"country": country,
 			"currency": currency,
+			"product_count_band": product_count_band,
+			"support_need": support_need,
+			"signup_plan": signup_plan,
+			"referral_source": referral_source,
 			"owner_full_name": owner_full_name,
 			"owner_email": owner_email.strip().lower(),
 			"owner_phone": (owner_phone or "").strip(),
@@ -307,12 +405,36 @@ def get_status(token: str):
 	# Prefer HTTPS domain URL; fall back to IP cookie link only if DNS is off.
 	canonical = t.site_url or tenant_url(t.site_name)
 	open_url = canonical if t.dns_active else tenant_ip_url(t.site_name)
+	step = t.provisioning_step or ""
 	return {
 		"status": t.status,
-		"step": t.provisioning_step,
+		"step": step,
+		"step_index": _provision_step_index(step, t.status),
 		"error": t.error_message if t.status == "Failed" else "",
 		"site_name": t.site_name,
 		"site_url": open_url,
 		"dns_active": t.dns_active,
 		"ip_url": tenant_ip_url(t.site_name),
 	}
+
+
+def _provision_step_index(step: str, status: str) -> int:
+	"""Map provisioning_step text to checklist index 0–5 (or 6 when done)."""
+	if status == "Active":
+		return 6
+	if not step:
+		return 0
+	s = step.lower()
+	if "1/6" in s or "create site" in s:
+		return 0
+	if "2/6" in s or "restore" in s or "template" in s or "migrate" in s or "scrub" in s or "install" in s:
+		return 1
+	if "3/6" in s or "company" in s:
+		return 2
+	if "4/6" in s or "owner" in s:
+		return 3
+	if "5/6" in s or "defaults" in s:
+		return 4
+	if "6/6" in s or "ssl" in s or "https" in s or "nginx" in s:
+		return 5
+	return 0

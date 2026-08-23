@@ -1,0 +1,250 @@
+{
+ "actions": [],
+ "autoname": "format:Step-{step}",
+ "creation": "2026-08-20 09:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "step",
+  "enabled",
+  "column_break_meta",
+  "step_key",
+  "image_section",
+  "image",
+  "image_url",
+  "copy_section",
+  "kicker_en",
+  "title_en",
+  "subtitle_en",
+  "column_break_ar",
+  "kicker_ar",
+  "title_ar",
+  "subtitle_ar",
+  "column_break_tr",
+  "kicker_tr",
+  "title_tr",
+  "subtitle_tr",
+  "bullets_section",
+  "bullet_1_icon",
+  "bullet_1_en",
+  "bullet_1_ar",
+  "bullet_1_tr",
+  "bullet_2_icon",
+  "bullet_2_en",
+  "bullet_2_ar",
+  "bullet_2_tr",
+  "bullet_3_icon",
+  "bullet_3_en",
+  "bullet_3_ar",
+  "bullet_3_tr"
+ ],
+ "fields": [
+  {
+   "fieldname": "step",
+   "fieldtype": "Int",
+   "label": "Wizard Step",
+   "reqd": 1,
+   "unique": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "description": "1=Company, 2=Plan, 3=Look, 4=You, 5=Address, 6=Review"
+  },
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_meta",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "step_key",
+   "fieldtype": "Select",
+   "label": "Step Key",
+   "options": "company\nplan\nlook\nyou\naddress\nreview",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "image_section",
+   "fieldtype": "Section Break",
+   "label": "Aside Image"
+  },
+  {
+   "fieldname": "image",
+   "fieldtype": "Attach Image",
+   "label": "Uploaded Image"
+  },
+  {
+   "fieldname": "image_url",
+   "fieldtype": "Data",
+   "label": "External Image URL",
+   "description": "Used when no uploaded image. Prefer Unsplash or CDN HTTPS URLs."
+  },
+  {
+   "fieldname": "copy_section",
+   "fieldtype": "Section Break",
+   "label": "Copy (EN / AR / TR)"
+  },
+  {
+   "fieldname": "kicker_en",
+   "fieldtype": "Data",
+   "label": "Kicker (EN)"
+  },
+  {
+   "fieldname": "title_en",
+   "fieldtype": "Data",
+   "label": "Title (EN)",
+   "reqd": 1
+  },
+  {
+   "fieldname": "subtitle_en",
+   "fieldtype": "Small Text",
+   "label": "Subtitle (EN)"
+  },
+  {
+   "fieldname": "column_break_ar",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "kicker_ar",
+   "fieldtype": "Data",
+   "label": "Kicker (AR)"
+  },
+  {
+   "fieldname": "title_ar",
+   "fieldtype": "Data",
+   "label": "Title (AR)"
+  },
+  {
+   "fieldname": "subtitle_ar",
+   "fieldtype": "Small Text",
+   "label": "Subtitle (AR)"
+  },
+  {
+   "fieldname": "column_break_tr",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "kicker_tr",
+   "fieldtype": "Data",
+   "label": "Kicker (TR)"
+  },
+  {
+   "fieldname": "title_tr",
+   "fieldtype": "Data",
+   "label": "Title (TR)"
+  },
+  {
+   "fieldname": "subtitle_tr",
+   "fieldtype": "Small Text",
+   "label": "Subtitle (TR)"
+  },
+  {
+   "fieldname": "bullets_section",
+   "fieldtype": "Section Break",
+   "label": "Bullets"
+  },
+  {
+   "default": "🏢",
+   "fieldname": "bullet_1_icon",
+   "fieldtype": "Data",
+   "label": "Bullet 1 Icon"
+  },
+  {
+   "fieldname": "bullet_1_en",
+   "fieldtype": "Data",
+   "label": "Bullet 1 (EN)"
+  },
+  {
+   "fieldname": "bullet_1_ar",
+   "fieldtype": "Data",
+   "label": "Bullet 1 (AR)"
+  },
+  {
+   "fieldname": "bullet_1_tr",
+   "fieldtype": "Data",
+   "label": "Bullet 1 (TR)"
+  },
+  {
+   "default": "📦",
+   "fieldname": "bullet_2_icon",
+   "fieldtype": "Data",
+   "label": "Bullet 2 Icon"
+  },
+  {
+   "fieldname": "bullet_2_en",
+   "fieldtype": "Data",
+   "label": "Bullet 2 (EN)"
+  },
+  {
+   "fieldname": "bullet_2_ar",
+   "fieldtype": "Data",
+   "label": "Bullet 2 (AR)"
+  },
+  {
+   "fieldname": "bullet_2_tr",
+   "fieldtype": "Data",
+   "label": "Bullet 2 (TR)"
+  },
+  {
+   "default": "✨",
+   "fieldname": "bullet_3_icon",
+   "fieldtype": "Data",
+   "label": "Bullet 3 Icon"
+  },
+  {
+   "fieldname": "bullet_3_en",
+   "fieldtype": "Data",
+   "label": "Bullet 3 (EN)"
+  },
+  {
+   "fieldname": "bullet_3_ar",
+   "fieldtype": "Data",
+   "label": "Bullet 3 (AR)"
+  },
+  {
+   "fieldname": "bullet_3_tr",
+   "fieldtype": "Data",
+   "label": "Bullet 3 (TR)"
+  }
+ ],
+ "index_web_pages_for_search": 0,
+ "links": [],
+ "modified": "2026-08-20 09:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "SaaS Master",
+ "name": "Signup Aside Step",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "All",
+   "share": 1
+  }
+ ],
+ "sort_field": "step",
+ "sort_order": "ASC",
+ "states": [],
+ "title_field": "title_en",
+ "track_changes": 1
+}

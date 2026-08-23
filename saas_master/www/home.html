@@ -6,7 +6,7 @@
 {% block footer %}{% endblock %}
 
 {% block head_include %}
-<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816fullbleed">
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260820enTrWhite">
 <script>
   document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
   document.documentElement.setAttribute("dir", "{{ sm_dir }}");
@@ -35,6 +35,10 @@
       fetchpriority="high"
     >
     <div class="sm-hero-scrim"></div>
+    <div class="sm-hero-fx" aria-hidden="true">
+      <span class="sm-hero-beam"></span>
+      <span class="sm-hero-dust"></span>
+    </div>
   </div>
   <div class="sm-wrap sm-hero-grid">
     <div class="sm-hero-copy">
@@ -67,36 +71,31 @@
       <p>{{ sm.sec_solutions_sub }}</p>
     </div>
     <div class="sm-pillars">
-      <article class="sm-pillar">
-        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
-        <h3>{{ sm.sol_storefront_t }}</h3>
-        <p>{{ sm.sol_storefront_d }}</p>
+      {% set imgs = sm_pillar_images or [] %}
+      {% for row in [
+        {'t': sm.sol_storefront_t, 'd': sm.sol_storefront_d, 'soon': false},
+        {'t': sm.sol_inventory_t, 'd': sm.sol_inventory_d, 'soon': false},
+        {'t': sm.sol_orders_t, 'd': sm.sol_orders_d, 'soon': false},
+        {'t': sm.sol_lang_t, 'd': sm.sol_lang_d, 'soon': false},
+        {'t': sm.sol_pay_t, 'd': sm.sol_pay_d, 'soon': true},
+        {'t': sm.sol_ship_t, 'd': sm.sol_ship_d, 'soon': true}
+      ] %}
+      {% set src = imgs[loop.index0] if loop.index0 < (imgs|length) else '' %}
+      <article class="sm-pillar{% if row.soon %} sm-pillar-soon{% endif %}">
+        {% if src %}
+        <div class="sm-pillar-media">
+          <img class="sm-pillar-img" src="{{ src }}" alt="" width="900" height="560" loading="lazy" decoding="async">
+          <span class="sm-badge{% if not row.soon %} sm-badge-ok{% endif %}">{% if row.soon %}{{ sm.badge_coming }}{% else %}{{ sm.badge_available }}{% endif %}</span>
+        </div>
+        {% else %}
+        <span class="sm-badge{% if not row.soon %} sm-badge-ok{% endif %}">{% if row.soon %}{{ sm.badge_coming }}{% else %}{{ sm.badge_available }}{% endif %}</span>
+        {% endif %}
+        <div class="sm-pillar-body">
+          <h3>{{ row.t }}</h3>
+          <p>{{ row.d }}</p>
+        </div>
       </article>
-      <article class="sm-pillar">
-        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
-        <h3>{{ sm.sol_inventory_t }}</h3>
-        <p>{{ sm.sol_inventory_d }}</p>
-      </article>
-      <article class="sm-pillar">
-        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
-        <h3>{{ sm.sol_orders_t }}</h3>
-        <p>{{ sm.sol_orders_d }}</p>
-      </article>
-      <article class="sm-pillar">
-        <span class="sm-badge sm-badge-ok">{{ sm.badge_available }}</span>
-        <h3>{{ sm.sol_lang_t }}</h3>
-        <p>{{ sm.sol_lang_d }}</p>
-      </article>
-      <article class="sm-pillar sm-pillar-soon">
-        <span class="sm-badge">{{ sm.badge_coming }}</span>
-        <h3>{{ sm.sol_pay_t }}</h3>
-        <p>{{ sm.sol_pay_d }}</p>
-      </article>
-      <article class="sm-pillar sm-pillar-soon">
-        <span class="sm-badge">{{ sm.badge_coming }}</span>
-        <h3>{{ sm.sol_ship_t }}</h3>
-        <p>{{ sm.sol_ship_d }}</p>
-      </article>
+      {% endfor %}
     </div>
     <div class="sm-section-cta">
       <a class="sm-link" href="/solutions?lang={{ sm_lang }}">{{ sm.nav_solutions }} →</a>
@@ -110,10 +109,26 @@
       <h2>{{ sm.sec_audience }}</h2>
     </div>
     <div class="sm-audience">
-      <div><h3>{{ sm.aud_1_t }}</h3><p>{{ sm.aud_1_d }}</p></div>
-      <div><h3>{{ sm.aud_2_t }}</h3><p>{{ sm.aud_2_d }}</p></div>
-      <div><h3>{{ sm.aud_3_t }}</h3><p>{{ sm.aud_3_d }}</p></div>
-      <div><h3>{{ sm.aud_4_t }}</h3><p>{{ sm.aud_4_d }}</p></div>
+      {% set aimgs = sm_audience_images or [] %}
+      {% for row in [
+        {'t': sm.aud_1_t, 'd': sm.aud_1_d},
+        {'t': sm.aud_2_t, 'd': sm.aud_2_d},
+        {'t': sm.aud_3_t, 'd': sm.aud_3_d},
+        {'t': sm.aud_4_t, 'd': sm.aud_4_d}
+      ] %}
+      {% set src = aimgs[loop.index0] if loop.index0 < (aimgs|length) else '' %}
+      <article class="sm-audience-card">
+        {% if src %}
+        <div class="sm-audience-media">
+          <img class="sm-audience-img" src="{{ src }}" alt="" width="900" height="560" loading="lazy" decoding="async">
+        </div>
+        {% endif %}
+        <div class="sm-audience-body">
+          <h3>{{ row.t }}</h3>
+          <p>{{ row.d }}</p>
+        </div>
+      </article>
+      {% endfor %}
     </div>
   </div>
 </section>

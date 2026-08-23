@@ -180,22 +180,27 @@ def provision_site(tenant_name: str):
 		if not ok:
 			raise StepFailed("store defaults", "defaults failed (see Provisioning Log)")
 
-		# ---- step 6: TLS + nginx + finalize ----
-		_set(tenant, provisioning_step="6/6 ssl + nginx")
+		# ---- step 6: best-effort TLS + nginx; never fail the site on HTTPS lag ----
+		_set(tenant, provisioning_step="6/6 securing https")
 		from saas_master.provisioning.ssl import ensure_tenant_ssl
 
+		https_ok = False
+		ssl_note = ""
 		try:
 			ensure_tenant_ssl(site, tenant_name=tenant_name)
+			https_ok = True
 		except Exception as ssl_err:
-			# Site is usable on HTTP; keep provisioning failed so admin can retry SSL
-			raise StepFailed("ssl", str(ssl_err)) from ssl_err
+			# Site apps/data are ready. DNS/cert can lag — keep Active and surface IP fallback.
+			ssl_note = str(ssl_err)[:500]
+			frappe.log_error(title=f"ssl soft-fail {site}", message=ssl_note)
 
 		_set(
 			tenant,
-			provisioning_step="6/6 done",
+			provisioning_step="6/6 done" if https_ok else "6/6 https pending",
 			status="Active",
 			site_url=f"https://{site}",
-			dns_active=1,
+			dns_active=1 if https_ok else 0,
+			error_message=ssl_note if not https_ok else "",
 		)
 		# owner password no longer needed on the master site
 		tenant.db_set("owner_password", "", commit=True)

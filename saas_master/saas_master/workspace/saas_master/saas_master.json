@@ -152,6 +152,12 @@
    "label": "Landing Editor",
    "type": "URL",
    "url": "/landing-editor"
+  },
+  {
+   "color": "Purple",
+   "label": "Signup Aside Step",
+   "link_to": "Signup Aside Step",
+   "type": "DocType"
   }
  ],
  "title": "SaaS Master"

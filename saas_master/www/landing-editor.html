@@ -5,15 +5,30 @@
 {% block footer %}{% endblock %}
 
 {% block head_include %}
-<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260816landing">
-<link rel="stylesheet" href="/assets/saas_master/css/marketing-editor.css?v=20260816a">
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260820enTrWhite">
+<link rel="stylesheet" href="/assets/saas_master/css/marketing-editor.css?v=20260820ed15">
+<style>
+  /* First-paint: kill Frappe website chrome before the editor mounts */
+  html, body.ml-editor-body { height: 100%; margin: 0; overflow: hidden; }
+  body.ml-editor-body .navbar,
+  body.ml-editor-body .web-footer,
+  body.ml-editor-body .page-breadcrumbs,
+  body.ml-editor-body .page-header-wrapper,
+  body.ml-editor-body .page-footer { display: none !important; }
+  body.ml-editor-body .page-content-wrapper,
+  body.ml-editor-body main,
+  body.ml-editor-body .page_content,
+  body.ml-editor-body .page-content { margin: 0 !important; padding: 0 !important; max-width: none !important; width: 100% !important; height: 100%; }
+</style>
 {% endblock %}
 
 {% block page_content %}
 <div id="ml-editor-root" class="ml-editor-page"></div>
-<script src="/assets/saas_master/js/marketing-editor.js?v=20260816a"></script>
+<script src="/assets/saas_master/js/marketing.js?v=20260820aud"></script>
+<script src="/assets/saas_master/js/marketing-editor.js?v=20260820ed13"></script>
 <script>
   document.body.classList.add("ml-editor-body");
+  document.documentElement.classList.add("ml-editor-html");
   window.MarketingEditor.mount(document.getElementById("ml-editor-root"), {
     lang: (document.documentElement.getAttribute("data-sm-lang") || "en"),
     call: async function (method, args) {

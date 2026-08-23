@@ -1,25 +1,25 @@
 <footer class="sm-footer">
   <div class="sm-wrap sm-footer-inner">
     <div class="sm-footer-brand">
-      <a class="sm-logo" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <a class="sm-logo" href="{{ sm.home_href }}">{{ sm_brand_html|safe }}</a>
       <p>{{ sm.footer_copy }}</p>
     </div>
     <div class="sm-footer-cols">
       <div>
         <strong>{{ sm.nav_solutions }}</strong>
-        <a href="/solutions?lang={{ sm_lang }}">{{ sm.nav_solutions }}</a>
-        <a href="/pricing?lang={{ sm_lang }}">{{ sm.nav_pricing }}</a>
-        <a href="/#templates">{{ sm.nav_templates }}</a>
+        <a href="{{ sm.nav_solutions_href }}">{{ sm.nav_solutions }}</a>
+        <a href="{{ sm.nav_pricing_href }}">{{ sm.nav_pricing }}</a>
+        <a href="{{ sm.nav_templates_href }}">{{ sm.nav_templates }}</a>
       </div>
       <div>
         <strong>{{ sm.footer_contact }}</strong>
-        <a href="mailto:dev@flexloopers.com">dev@flexloopers.com</a>
-        <a href="https://flexloopers.com" target="_blank" rel="noopener">flexloopers.com</a>
+        <a href="mailto:{{ sm.contact_email }}">{{ sm.contact_email }}</a>
+        <a href="{{ sm.contact_url }}" target="_blank" rel="noopener">{{ sm.contact_url_label }}</a>
       </div>
     </div>
   </div>
   <div class="sm-wrap sm-footer-copy">
-    © {{ frappe.utils.nowdate()[:4] }} {{ sm.footer_copy }}
+    © {{ sm.copyright_year or frappe.utils.nowdate()[:4] }} {{ sm.footer_legal or sm.footer_copy }}
   </div>
 </footer>
-<script src="/assets/saas_master/js/marketing.js?v=20260803b"></script>
+<script src="/assets/saas_master/js/marketing.js?v=20260820aud"></script>

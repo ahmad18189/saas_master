@@ -1,0 +1,235 @@
+{% extends "templates/web.html" %}
+
+{% block title %}{{ sm.lg_title }}{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block head_include %}
+{{ include_style('login.bundle.css') }}
+<link rel="stylesheet" href="/assets/saas_master/css/master.css?v=20260820signupDark2">
+<script>
+  document.documentElement.setAttribute("lang", "{{ sm_lang }}");
+  document.documentElement.setAttribute("dir", "{{ sm_dir }}");
+  document.documentElement.setAttribute("data-sm-lang", "{{ sm_lang }}");
+</script>
+{% endblock %}
+
+{% block page_content %}
+<script>document.body.classList.add("sm-page", "sm-signup-page", "sm-login-page");</script>
+
+<div class="sm-signup-shell sm-login-shell">
+  <aside class="sm-signup-aside" aria-hidden="true">
+    <div class="sm-signup-aside-bg is-active" style="background-image:url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&amp;fit=crop&amp;w=1200&amp;h=1600&amp;q=80')"></div>
+    <div class="sm-signup-aside-fx" aria-hidden="true">
+      <span class="sm-aside-orb sm-aside-orb--a"></span>
+      <span class="sm-aside-orb sm-aside-orb--b"></span>
+      <span class="sm-aside-orb sm-aside-orb--c"></span>
+      <span class="sm-aside-beam"></span>
+      <span class="sm-aside-sparkles"></span>
+    </div>
+    <div class="sm-signup-aside-content">
+      <a class="sm-logo sm-logo-on-dark" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <p class="sm-signup-kicker" data-i18n="lg_aside_kicker">{{ sm.lg_aside_kicker }}</p>
+      <h1 data-i18n="lg_aside_title">{{ sm.lg_aside_title }}</h1>
+      <p data-i18n="lg_aside_sub">{{ sm.lg_aside_sub }}</p>
+      <ul class="sm-signup-bullets">
+        <li><span class="sm-ico" aria-hidden="true">🏪</span> <span data-i18n="lg_aside_b1">{{ sm.lg_aside_b1 }}</span></li>
+        <li><span class="sm-ico" aria-hidden="true">🔐</span> <span data-i18n="lg_aside_b2">{{ sm.lg_aside_b2 }}</span></li>
+        <li><span class="sm-ico" aria-hidden="true">🌐</span> <span data-i18n="lg_aside_b3">{{ sm.lg_aside_b3 }}</span></li>
+      </ul>
+    </div>
+  </aside>
+
+  <div class="sm-signup-main">
+    <header class="sm-signup-top">
+      <a class="sm-logo sm-logo-mobile" href="/?lang={{ sm_lang }}">Du<span>kan</span></a>
+      <div class="sm-topbar-tools">
+        {% include "templates/includes/sm_mode_toggle.html" %}
+        <div class="sm-theme-picker" data-sm-theme-picker>
+          <button type="button" class="sm-theme-trigger" aria-haspopup="listbox" aria-expanded="false" title="Accent color">
+            <span class="sm-theme-swatch" aria-hidden="true"></span>
+            <span class="sm-theme-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="sm-theme-menu" hidden role="listbox" aria-label="Accent colors">
+            <div class="sm-theme-menu-label">Accent</div>
+            <div class="sm-theme-grid"></div>
+          </div>
+        </div>
+        <div class="sm-lang sm-lang-prominent" role="group" aria-label="Language">
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'ar' %} active{% endif %}" data-sm-lang="ar" title="العربية">AR</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'en' %} active{% endif %}" data-sm-lang="en" title="English">EN</button>
+          <button type="button" class="sm-lang-btn{% if sm_lang == 'tr' %} active{% endif %}" data-sm-lang="tr" title="Türkçe">TR</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="sm-wizard sm-wizard-wide sm-login-card">
+      <noscript>
+        <div class="text-center my-5">
+          <h4>{{ _("Javascript is disabled on your browser") }}</h4>
+          <p class="text-muted">{{ _("You need to enable JavaScript for your app to work.") }}</p>
+        </div>
+      </noscript>
+
+      {# —— Merchant: open your store (#login) —— #}
+      <section class="for-store-login sm-login-panel sm-panel-active">
+        <h2 data-i18n="lg_store_heading">{{ sm.lg_store_heading }}</h2>
+        <p class="sm-hint sm-login-lead" data-i18n="lg_store_lead">{{ sm.lg_store_lead }}</p>
+
+        <form class="form-store-login" id="form-store-login" role="form">
+          <div class="sm-field">
+            <label for="store_subdomain" data-i18n="lg_store_address">{{ sm.lg_store_address }}</label>
+            <div class="sm-subdomain-row">
+              <input id="store_subdomain" type="text" maxlength="31" autocomplete="off" spellcheck="false"
+                data-i18n-placeholder="lg_store_ph" placeholder="{{ sm.lg_store_ph }}">
+              <span class="sm-suffix">.flexloopers.com</span>
+            </div>
+          </div>
+          <div class="sm-field">
+            <label for="store_email" data-i18n="lg_email_lookup">{{ sm.lg_email_lookup }}</label>
+            <input id="store_email" type="email" autocomplete="username"
+              data-i18n-placeholder="lg_email_ph" placeholder="{{ sm.lg_email_ph }}">
+            <div class="sm-hint" data-i18n="lg_email_hint">{{ sm.lg_email_hint }}</div>
+          </div>
+          <div class="sm-error" id="store-login-err" hidden></div>
+          <div class="sm-login-choices" id="store-login-choices" hidden></div>
+          <div class="sm-wizard-nav sm-login-actions">
+            <button class="sm-btn" id="btn-open-store" type="submit" data-i18n="lg_continue">{{ sm.lg_continue }}</button>
+          </div>
+        </form>
+
+        <p class="sm-login-footer-links">
+          <span data-i18n="lg_no_store">{{ sm.lg_no_store }}</span>
+          <a href="/signup?lang={{ sm_lang }}" data-i18n="lg_create_store">{{ sm.lg_create_store }}</a>
+        </p>
+        <p class="sm-login-footer-links sm-login-ops-link">
+          <a href="#platform" data-i18n="lg_platform_link">{{ sm.lg_platform_link }}</a>
+        </p>
+      </section>
+
+      {# —— Operator: Frappe auth (#platform) —— #}
+      <section class="for-login sm-login-panel" style="display:none">
+        <h2 data-i18n="lg_ops_heading">{{ sm.lg_ops_heading }}</h2>
+        <p class="sm-hint sm-login-lead" data-i18n="lg_ops_lead">{{ sm.lg_ops_lead }}</p>
+        <div class="login-content page-card sm-frappe-login">
+          <form class="form-signin form-login" role="form">
+            {% if not disable_user_pass_login or (ldap_settings and ldap_settings.enabled) %}
+            <div class="page-card-body">
+              <div class="form-group sm-field">
+                <label class="form-label" for="login_email">{{ login_label or _("Email") }}</label>
+                <div class="email-field">
+                  <input type="text" id="login_email" class="form-control"
+                    placeholder="{{ _('you@example.com') }}"
+                    required autofocus autocomplete="username">
+                </div>
+              </div>
+              <div class="form-group sm-field">
+                <label class="form-label" for="login_password">{{ _("Password") }}</label>
+                <div class="password-field">
+                  <input type="password" id="login_password" class="form-control" placeholder="••••••••"
+                    autocomplete="current-password" required>
+                  <span toggle="#login_password" class="toggle-password text-muted">{{ _("Show") }}</span>
+                </div>
+              </div>
+              {% if not disable_user_pass_login %}
+              <p class="forgot-password-message">
+                <a href="#forgot">{{ _("Forgot Password?") }}</a>
+              </p>
+              {% endif %}
+            </div>
+            {% endif %}
+            <div class="page-card-actions">
+              {% if not disable_user_pass_login %}
+              <button class="btn btn-sm btn-primary btn-block btn-login sm-btn" type="submit">{{ _("Login") }}</button>
+              {% endif %}
+              {% if ldap_settings and ldap_settings.enabled %}
+              <button class="btn btn-sm {{ "btn-primary" if disable_user_pass_login else "btn-default" }} btn-block btn-login btn-ldap-login" type="button">
+                {{ _("Login with LDAP") }}
+              </button>
+              {% endif %}
+            </div>
+            {% if login_with_email_link %}
+            <div class="social-logins text-center" style="margin-top:1rem">
+              <p class="text-muted login-divider">{{ _("or") }}</p>
+              <div class="login-with-email-link social-login-buttons">
+                <a href="#login-with-email-link"
+                  class="btn btn-block btn-default btn-sm btn-login-option btn-login-with-email-link">
+                  {{ _("Login with Email Link") }}
+                </a>
+              </div>
+            </div>
+            {% endif %}
+          </form>
+        </div>
+        <p class="sm-login-footer-links">
+          <a href="#login" data-i18n="lg_back_store">{{ sm.lg_back_store }}</a>
+        </p>
+      </section>
+
+      <section class="for-forgot sm-login-panel" style="display:none">
+        <h2>{{ _("Forgot Password") }}</h2>
+        <div class="login-content page-card sm-frappe-login">
+          <form class="form-signin form-forgot hide" role="form">
+            <div class="page-card-body">
+              <div class="form-group sm-field">
+                <label class="form-label" for="forgot_email">{{ _("Email Address") }}</label>
+                <div class="email-field">
+                  <input type="email" id="forgot_email" class="form-control"
+                    placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
+                </div>
+              </div>
+            </div>
+            <div class="page-card-actions">
+              <button class="btn btn-sm btn-primary btn-block btn-forgot sm-btn" type="submit">{{ _("Reset Password") }}</button>
+              <p class="text-center sign-up-message">
+                <a href="#platform">{{ _("Back to Login") }}</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="for-login-with-email-link sm-login-panel" style="display:none">
+        <h2>{{ _("Login with Email Link") }}</h2>
+        <div class="login-content page-card sm-frappe-login">
+          <form class="form-signin form-login-with-email-link hide" role="form">
+            <div class="page-card-body">
+              <div class="form-group sm-field">
+                <label class="form-label" for="login_with_email_link_email">{{ _("Email Address") }}</label>
+                <div class="email-field">
+                  <input type="email" id="login_with_email_link_email" class="form-control"
+                    placeholder="{{ _('Email Address') }}" required autofocus autocomplete="username">
+                </div>
+              </div>
+            </div>
+            <div class="page-card-actions">
+              <button class="btn btn-sm btn-primary btn-block btn-login-with-email-link sm-btn" type="submit">
+                {{ _("Send login link") }}
+              </button>
+              <p class="text-center sign-up-message">
+                <a href="#platform">{{ _("Back to Login") }}</a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {# Hidden stub so Frappe login.js signup route does not break #}
+      <section class="for-signup signup-disabled" style="display:none" aria-hidden="true"></section>
+      <section class="for-email-login" style="display:none" aria-hidden="true"></section>
+    </div>
+  </div>
+</div>
+
+<script type="application/json" id="sm-i18n">{{ login_i18n_json | safe }}</script>
+<script type="application/json" id="sm-i18n-all">{{ login_i18n_all_json | safe }}</script>
+{% endblock %}
+
+{% block script %}
+<script>{% include "templates/includes/login/login.js" %}</script>
+<script src="/assets/saas_master/js/login.js?v=20260820login1"></script>
+<script src="/assets/saas_master/js/marketing.js?v=20260820mode2"></script>
+{% endblock %}
+
+{% block sidebar %}{% endblock %}

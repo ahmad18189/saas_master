@@ -10,8 +10,10 @@
   "last_saved_on",
   "section_draft",
   "draft_blocks",
+  "draft_chrome",
   "section_published",
-  "published_blocks"
+  "published_blocks",
+  "published_chrome"
  ],
  "fields": [
   {
@@ -49,6 +51,11 @@
    "label": "Draft Blocks JSON"
   },
   {
+   "fieldname": "draft_chrome",
+   "fieldtype": "Long Text",
+   "label": "Draft Header/Footer JSON"
+  },
+  {
    "fieldname": "section_published",
    "fieldtype": "Section Break",
    "label": "Published"
@@ -57,11 +64,16 @@
    "fieldname": "published_blocks",
    "fieldtype": "Long Text",
    "label": "Published Blocks JSON"
+  },
+  {
+   "fieldname": "published_chrome",
+   "fieldtype": "Long Text",
+   "label": "Published Header/Footer JSON"
   }
  ],
  "issingle": 1,
  "links": [],
- "modified": "2026-08-16 00:00:00.000000",
+ "modified": "2026-08-20 19:51:00.000000",
  "modified_by": "Administrator",
  "module": "SaaS Master",
  "name": "Marketing Landing",
